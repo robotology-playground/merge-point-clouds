@@ -39,8 +39,8 @@
 #define TORSO_ACCELERATION_PITCH	50
 #define TORSO_ACCELERATION_ROLL		50
 
-#define MAX_TORSO_VELOCITY 10
-#define KP				3
+#define MAX_TORSO_VELOCITY 20.0
+#define KP				3.0
 #define MAX_TRAJ_TIME  2
 
 #define GAZE_HOME_POS_X		-0.4
@@ -202,9 +202,9 @@ class TorsoModule:public RFModule
         }
 
 		switch(command.get(0).asVocab()){
-		case QUIT:
-			reply.addString("Closing application.");
-			return false;
+		//case QUIT:
+		//	reply.addString("Closing application.");
+		//	return false;
 		case HOME:
 			if(command.size()>1)
 					switch(command.get(1).asVocab()){
@@ -304,7 +304,8 @@ class TorsoModule:public RFModule
 			return true;
 
 		default:
-				reply.addString("Uknown command; type help for list.");
+                RFModule::respond(command,reply);
+				//reply.addString("Uknown command; type help for list.");
 				return true;
 		}
         return true;
@@ -318,10 +319,11 @@ class TorsoModule:public RFModule
 		cout<<"Configuring module!"<<endl;
 
 		moduleName=rf.check("name",Value("torsoModule")).asString().c_str();
-		robotName=rf.check("robot",Value("icubSim")).asString().c_str();
+		robotName=rf.check("robot",Value("icub")).asString().c_str();
 		period=rf.check("period",Value(0.2)).asDouble();
 		kp=rf.check("kp",Value(KP)).asDouble();
 		maxTrajTime=rf.check("torsoTime",Value(MAX_TRAJ_TIME)).asDouble();
+        maxTorsoVelocity=rf.check("maxTorsoVelocity",Value(MAX_TORSO_VELOCITY)).asDouble();
 
 		handlerPort.open(("/"+moduleName+"/rpc:i").c_str());
         attach(handlerPort);
@@ -342,10 +344,10 @@ class TorsoModule:public RFModule
 		gazeHomePosition.push_back(GAZE_HOME_POS_Y);
 		gazeHomePosition.push_back(GAZE_HOME_POS_Z);
 		
-		if(!igaze->setEyesTrajTime(maxTrajTime)){
-			cout << "Error in setting gaze trajectory time."<<endl;
-			return false;
-		}
+		//if(!igaze->setEyesTrajTime(maxTrajTime)){
+		//	cout << "Error in setting gaze trajectory time."<<endl;
+		//	return false;
+		//}
 
 
 		Property leftArmOption;
