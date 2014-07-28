@@ -54,7 +54,9 @@
 
 #define NEXT					VOCAB4('n','e','x','t')
 #define STOP					VOCAB4('s','t','o','p')
-#define RUN						VOCAB4('r','u','n')
+#define RUN						VOCAB3('r','u','n')
+
+#define BLOCK					VOCAB4('b','l','o','c')
 
 YARP_DECLARE_DEVICES(icubmod)
 
@@ -79,6 +81,7 @@ class TorsoModule:public RFModule
 	Vector gazeHomePosition;
 	Vector torsoHomePosition;
 	Vector torsoAcceleration;
+	Matrix waypoints;
 
 	PolyDriver clientGazeCtrl;
 	PolyDriver clientArmLeft;
@@ -95,6 +98,8 @@ class TorsoModule:public RFModule
 	int startupGazeContextID;
 	int startupArmLeftContextID;
 	int startupArmRightContextID;
+	int index;
+
 	double maxTorsoVelocity;
 	double kp;
 	double maxTorsoTrajTime;
@@ -187,6 +192,7 @@ class TorsoModule:public RFModule
 
     bool respond(const Bottle& command, Bottle& reply) 
     {
+		
 		if(command.size()==0)
         {
             reply.addString("No command received.");
@@ -272,7 +278,7 @@ class TorsoModule:public RFModule
 								reply.addString("Gaze tracking mode disabled.");
 							}
 							else
-								reply.addString("Wrong parameter: in/off");
+								reply.addString("Wrong parameter for trac: on/off");
 							return true;
 						default:
 								reply.addString("Wrong device for tracking mode.");
@@ -281,6 +287,31 @@ class TorsoModule:public RFModule
 			}
 			else{
 				reply.addString("Missing parameters for track.");
+				return true;
+			}
+
+		case BLOCK:
+			if(command.size()==3)
+				switch(command.get(1).asVocab()){
+						case GAZE:
+							if (command.get(2).asString() == "on"){
+								igaze->blockEyes(true);
+								reply.addString("Gaze blocking mode enabled.");
+							}
+							else if (command.get(2).asString() == "off"){
+								igaze->blockEyes(false);
+								reply.addString("Gaze blocking mode disabled.");
+							}
+							else
+								reply.addString("Wrong parameter for blocking: on/off");
+							return true;
+						default:
+								reply.addString("Wrong device for blocking mode.");
+								return true;
+
+			}
+			else{
+				reply.addString("Missing parameters for block.");
 				return true;
 			}
 
@@ -297,8 +328,27 @@ class TorsoModule:public RFModule
 				reply.addString("Missing parameters for goto.");
 				return true;
 			}
-			
 			return true;
+			
+		case RUN: 
+			reply.addString("Ready for exploration. next or stop?");
+			return true;
+		case NEXT:
+			exploreTorso(waypoints.getRow(index));
+			index++;
+			if (index > 4){
+				reply.addString("Waypoint reached. End of waypoints.");
+				index = 0;
+			}
+			else{
+				reply.addString("Waypoint reached. next or stop?");
+			}
+			return true;
+		case STOP:
+			index = 0;
+			reply.addString("Run stopped. Index reset.");
+			return true;
+			
 
 		default:
                 RFModule::respond(command,reply);
@@ -415,7 +465,14 @@ class TorsoModule:public RFModule
 
 		clientTorso.view(iTorsoEncoder);
 
-		
+
+		waypoints.resize(5,3);
+		waypoints(0,0) = 10.0; waypoints(0,1) = 10.0; waypoints(0,2) = 20.0; 
+		waypoints(1,0) = 30.0; waypoints(1,1) = 20.0; waypoints(1,2) = 20.0; 
+		waypoints(2,0) = 0.0; waypoints(2,1) = 0.0; waypoints(2,2) = 0.0; 
+		waypoints(3,0) = -10.0; waypoints(3,1) = -10.0; waypoints(3,2) = 20.0; 
+		waypoints(4,0) = -30.0; waypoints(4,1) = -20.0; waypoints(4,2) = 20.0; 
+		index = 0;
 		cout<<endl;
         return true;
     }
@@ -433,18 +490,21 @@ class TorsoModule:public RFModule
 
 		igaze->stopControl();
 		igaze->restoreContext(startupGazeContextID);
-		
+		igaze->deleteContext(startupGazeContextID);
+
 		if (clientGazeCtrl.isValid())
 			clientGazeCtrl.close();
 
 		icartLeft->stopControl();
 		icartLeft->restoreContext(startupArmLeftContextID);
-		
+		icartLeft->deleteContext(startupArmLeftContextID);
+
 		if (clientArmLeft.isValid())
 			clientArmLeft.close();
 
 		icartRight->stopControl();
 		icartRight->restoreContext(startupArmRightContextID);
+		icartRight->deleteContext(startupArmRightContextID);
 
 		if (clientArmLeft.isValid())
 			clientArmLeft.close();
