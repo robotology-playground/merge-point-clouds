@@ -1,0 +1,10 @@
+﻿Compilazione avviata 28/07/2014 15:21:39.
+     1>Progetto "D:\icubDemo\build\ZERO_CHECK.vcxproj" sul nodo 2 (destinazioni: Rebuild).
+     1>CustomBuild:
+         Checking Build System
+         CMake does not need to re-run because D:/icubDemo/build/CMakeFiles/generate.stamp is up-to-date.
+     1>Compilazione progetto "D:\icubDemo\build\ZERO_CHECK.vcxproj" (destinazioni: Rebuild) completata.
+
+Compilazione completata.
+
+Tempo trascorso 00:00:00.13

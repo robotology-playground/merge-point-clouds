@@ -1,0 +1,22 @@
+CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
+SET(PROJECTNAME torsoDemo)
+PROJECT(${PROJECTNAME})
+
+find_package(YARP)
+find_package(ICUB)
+
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${YARP_MODULE_PATH})
+
+include_directories(${YARP_INCLUDE_DIRS} ${ICUB_INCLUDE_DIRS})
+add_executable(${PROJECTNAME} torsoDemo.cpp)
+target_link_libraries(${PROJECTNAME} icubmod ${YARP_LIBRARIES})
+
+install(TARGETS ${PROJECTNAME} DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/bin)
+
+
+
+
+
+
+
+

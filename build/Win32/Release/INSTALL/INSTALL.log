@@ -1,0 +1,20 @@
+﻿Compilazione avviata 28/07/2014 15:21:41.
+     1>Progetto "D:\icubDemo\build\INSTALL.vcxproj" sul nodo 2 (destinazioni: Rebuild).
+     1>PostBuildEvent:
+         setlocal
+         "C:\Program Files (x86)\CMake\bin\cmake.exe" -DBUILD_TYPE=Release -P cmake_install.cmake
+         if %errorlevel% neq 0 goto :cmEnd
+         :cmEnd
+         endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+         :cmErrorLevel
+         exit /b %1
+         :cmDone
+         if %errorlevel% neq 0 goto :VCEnd
+         :VCEnd
+         -- Install configuration: "Release"
+         -- Installing: D:/icubDemo/bin/torsoDemo.exe
+     1>Compilazione progetto "D:\icubDemo\build\INSTALL.vcxproj" (destinazioni: Rebuild) completata.
+
+Compilazione completata.
+
+Tempo trascorso 00:00:00.20

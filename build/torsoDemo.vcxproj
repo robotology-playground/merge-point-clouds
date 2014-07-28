@@ -1,0 +1,321 @@
+﻿<?xml version="1.0" encoding="Windows-1252"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="MinSizeRel|Win32">
+      <Configuration>MinSizeRel</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="RelWithDebInfo|Win32">
+      <Configuration>RelWithDebInfo</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGUID>{37360705-1A86-4BDD-AE3E-6091A917905F}</ProjectGUID>
+    <Keyword>Win32Proj</Keyword>
+    <Platform>Win32</Platform>
+    <ProjectName>torsoDemo</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v110</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v110</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v110</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v110</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+    <PropertyGroup>
+      <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
+      <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">D:\icubDemo\build\Debug\</OutDir>
+      <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">torsoDemo.dir\Debug\</IntDir>
+      <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">torsoDemo</TargetName>
+      <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.exe</TargetExt>
+      <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</LinkIncremental>
+      <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</GenerateManifest>
+      <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">D:\icubDemo\build\Release\</OutDir>
+      <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">torsoDemo.dir\Release\</IntDir>
+      <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">torsoDemo</TargetName>
+      <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.exe</TargetExt>
+      <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
+      <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</GenerateManifest>
+      <OutDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">D:\icubDemo\build\MinSizeRel\</OutDir>
+      <IntDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">torsoDemo.dir\MinSizeRel\</IntDir>
+      <TargetName Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">torsoDemo</TargetName>
+      <TargetExt Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">.exe</TargetExt>
+      <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">false</LinkIncremental>
+      <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">true</GenerateManifest>
+      <OutDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">D:\icubDemo\build\RelWithDebInfo\</OutDir>
+      <IntDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">torsoDemo.dir\RelWithDebInfo\</IntDir>
+      <TargetName Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">torsoDemo</TargetName>
+      <TargetExt Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">.exe</TargetExt>
+      <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">true</LinkIncremental>
+      <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">true</GenerateManifest>
+    </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>C:\Program Files (x86)\robotology\yarp-2.3.63\cmake\..\include;C:\Program Files (x86)\robotology\icub-1.1.15\include;C:\Program Files (x86)\robotology\opencv-git-snapshot-26-09-12\include;C:\Program Files (x86)\robotology\opencv-git-snapshot-26-09-12\include\opencv;C:\Program Files (x86)\robotology\gsl-1.14\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>Debug/</AssemblerListingLocation>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
+      <Optimization>Disabled</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;CMAKE_INTDIR="Debug";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;CMAKE_INTDIR=\"Debug\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Program Files (x86)\robotology\yarp-2.3.63\cmake\..\include;C:\Program Files (x86)\robotology\icub-1.1.15\include;C:\Program Files (x86)\robotology\opencv-git-snapshot-26-09-12\include;C:\Program Files (x86)\robotology\opencv-git-snapshot-26-09-12\include\opencv;C:\Program Files (x86)\robotology\gsl-1.14\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>C:\Program Files (x86)\robotology\yarp-2.3.63\cmake\..\include;C:\Program Files (x86)\robotology\icub-1.1.15\include;C:\Program Files (x86)\robotology\opencv-git-snapshot-26-09-12\include;C:\Program Files (x86)\robotology\opencv-git-snapshot-26-09-12\include\opencv;C:\Program Files (x86)\robotology\gsl-1.14\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalOptions> /machine:X86 /debug %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib;C:\Program Files (x86)\robotology\icub-1.1.15\lib\icubmodd.lib;C:\Program Files (x86)\robotology\yarp-2.3.63\lib\YARP_OSd.lib;C:\Program Files (x86)\robotology\yarp-2.3.63\lib\YARP_sigd.lib;C:\Program Files (x86)\robotology\yarp-2.3.63\lib\YARP_mathd.lib;C:\Program Files (x86)\robotology\yarp-2.3.63\lib\YARP_devd.lib;C:\Program Files (x86)\robotology\yarp-2.3.63\lib\YARP_named.lib;C:\Program Files (x86)\robotology\yarp-2.3.63\lib\YARP_initd.lib;C:\Program Files (x86)\robotology\icub-1.1.15\lib\cartesiancontrollerserverd.lib;C:\Program Files (x86)\robotology\icub-1.1.15\lib\cartesiancontrollerclientd.lib;C:\Program Files (x86)\robotology\icub-1.1.15\lib\iKind.lib;C:\Program Files (x86)\robotology\icub-1.1.15\lib\ctrlLibd.lib;C:\Program Files (x86)\robotology\gsl-1.14\lib\gsl.lib;C:\Program Files (x86)\robotology\gsl-1.14\lib\gslcblas.lib;C:\Program Files (x86)\robotology\ipopt-3.10.1\lib\libipoptD.lib;C:\Program Files (x86)\robotology\icub-1.1.15\lib\fcand.lib;C:\Program Files (x86)\robotology\icub-1.1.15\lib\gazecontrollerclientd.lib;C:\Program Files (x86)\robotology\icub-1.1.15\lib\logpolarclientd.lib;C:\Program Files (x86)\robotology\icub-1.1.15\lib\iCubDevd.lib;C:\Program Files (x86)\robotology\icub-1.1.15\lib\logpolard.lib;C:\Program Files (x86)\robotology\icub-1.1.15\lib\static_grabberd.lib;C:\Program Files (x86)\robotology\icub-1.1.15\lib\debugInterfaceClientd.lib;C:\Program Files (x86)\robotology\yarp-2.3.63\lib\YARP_devd.lib;C:\Program Files (x86)\robotology\yarp-2.3.63\lib\YARP_named.lib;C:\Program Files (x86)\robotology\yarp-2.3.63\lib\YARP_initd.lib;C:\Program Files (x86)\robotology\yarp-2.3.63\lib\YARP_mathd.lib;C:\Program Files (x86)\robotology\yarp-2.3.63\lib\YARP_sigd.lib;C:\Program Files (x86)\robotology\yarp-2.3.63\lib\YARP_OSd.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:/Program Files (x86)/robotology/opencv-git-snapshot-26-09-12/lib;C:/Program Files (x86)/robotology/opencv-git-snapshot-26-09-12/lib/$(Configuration);;C:/Program Files (x86)/robotology/opencv-git-snapshot-26-09-12/share/OpenCV/3rdparty/lib;C:/Program Files (x86)/robotology/opencv-git-snapshot-26-09-12/share/OpenCV/3rdparty/lib/$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ImportLibrary>D:/icubDemo/build/Debug/torsoDemo.lib</ImportLibrary>
+      <ProgramDataBaseFile>D:/icubDemo/build/Debug/torsoDemo.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+      <Version></Version>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>C:\Program Files (x86)\robotology\yarp-2.3.63\cmake\..\include;C:\Program Files (x86)\robotology\icub-1.1.15\include;C:\Program Files (x86)\robotology\opencv-git-snapshot-26-09-12\include;C:\Program Files (x86)\robotology\opencv-git-snapshot-26-09-12\include\opencv;C:\Program Files (x86)\robotology\gsl-1.14\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>Release/</AssemblerListingLocation>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat></DebugInformationFormat>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR="Release";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR=\"Release\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Program Files (x86)\robotology\yarp-2.3.63\cmake\..\include;C:\Program Files (x86)\robotology\icub-1.1.15\include;C:\Program Files (x86)\robotology\opencv-git-snapshot-26-09-12\include;C:\Program Files (x86)\robotology\opencv-git-snapshot-26-09-12\include\opencv;C:\Program Files (x86)\robotology\gsl-1.14\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>C:\Program Files (x86)\robotology\yarp-2.3.63\cmake\..\include;C:\Program Files (x86)\robotology\icub-1.1.15\include;C:\Program Files (x86)\robotology\opencv-git-snapshot-26-09-12\include;C:\Program Files (x86)\robotology\opencv-git-snapshot-26-09-12\include\opencv;C:\Program Files (x86)\robotology\gsl-1.14\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalOptions> /machine:X86 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib;C:\Program Files (x86)\robotology\icub-1.1.15\lib\icubmod.lib;C:\Program Files (x86)\robotology\yarp-2.3.63\lib\YARP_OS.lib;C:\Program Files (x86)\robotology\yarp-2.3.63\lib\YARP_sig.lib;C:\Program Files (x86)\robotology\yarp-2.3.63\lib\YARP_math.lib;C:\Program Files (x86)\robotology\yarp-2.3.63\lib\YARP_dev.lib;C:\Program Files (x86)\robotology\yarp-2.3.63\lib\YARP_name.lib;C:\Program Files (x86)\robotology\yarp-2.3.63\lib\YARP_init.lib;C:\Program Files (x86)\robotology\icub-1.1.15\lib\cartesiancontrollerserver.lib;C:\Program Files (x86)\robotology\icub-1.1.15\lib\cartesiancontrollerclient.lib;C:\Program Files (x86)\robotology\icub-1.1.15\lib\iKin.lib;C:\Program Files (x86)\robotology\icub-1.1.15\lib\ctrlLib.lib;C:\Program Files (x86)\robotology\gsl-1.14\lib\gsl.lib;C:\Program Files (x86)\robotology\gsl-1.14\lib\gslcblas.lib;C:\Program Files (x86)\robotology\ipopt-3.10.1\lib\libipopt.lib;C:\Program Files (x86)\robotology\icub-1.1.15\lib\fcan.lib;C:\Program Files (x86)\robotology\icub-1.1.15\lib\gazecontrollerclient.lib;C:\Program Files (x86)\robotology\icub-1.1.15\lib\logpolarclient.lib;C:\Program Files (x86)\robotology\icub-1.1.15\lib\iCubDev.lib;C:\Program Files (x86)\robotology\icub-1.1.15\lib\logpolar.lib;C:\Program Files (x86)\robotology\icub-1.1.15\lib\static_grabber.lib;C:\Program Files (x86)\robotology\icub-1.1.15\lib\debugInterfaceClient.lib;C:\Program Files (x86)\robotology\yarp-2.3.63\lib\YARP_dev.lib;C:\Program Files (x86)\robotology\yarp-2.3.63\lib\YARP_name.lib;C:\Program Files (x86)\robotology\yarp-2.3.63\lib\YARP_init.lib;C:\Program Files (x86)\robotology\yarp-2.3.63\lib\YARP_math.lib;C:\Program Files (x86)\robotology\yarp-2.3.63\lib\YARP_sig.lib;C:\Program Files (x86)\robotology\yarp-2.3.63\lib\YARP_OS.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:/Program Files (x86)/robotology/opencv-git-snapshot-26-09-12/lib;C:/Program Files (x86)/robotology/opencv-git-snapshot-26-09-12/lib/$(Configuration);;C:/Program Files (x86)/robotology/opencv-git-snapshot-26-09-12/share/OpenCV/3rdparty/lib;C:/Program Files (x86)/robotology/opencv-git-snapshot-26-09-12/share/OpenCV/3rdparty/lib/$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <ImportLibrary>D:/icubDemo/build/Release/torsoDemo.lib</ImportLibrary>
+      <ProgramDataBaseFile>D:/icubDemo/build/Release/torsoDemo.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+      <Version></Version>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>C:\Program Files (x86)\robotology\yarp-2.3.63\cmake\..\include;C:\Program Files (x86)\robotology\icub-1.1.15\include;C:\Program Files (x86)\robotology\opencv-git-snapshot-26-09-12\include;C:\Program Files (x86)\robotology\opencv-git-snapshot-26-09-12\include\opencv;C:\Program Files (x86)\robotology\gsl-1.14\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>MinSizeRel/</AssemblerListingLocation>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <Optimization>MinSpace</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat></DebugInformationFormat>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR="MinSizeRel";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR=\"MinSizeRel\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Program Files (x86)\robotology\yarp-2.3.63\cmake\..\include;C:\Program Files (x86)\robotology\icub-1.1.15\include;C:\Program Files (x86)\robotology\opencv-git-snapshot-26-09-12\include;C:\Program Files (x86)\robotology\opencv-git-snapshot-26-09-12\include\opencv;C:\Program Files (x86)\robotology\gsl-1.14\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>C:\Program Files (x86)\robotology\yarp-2.3.63\cmake\..\include;C:\Program Files (x86)\robotology\icub-1.1.15\include;C:\Program Files (x86)\robotology\opencv-git-snapshot-26-09-12\include;C:\Program Files (x86)\robotology\opencv-git-snapshot-26-09-12\include\opencv;C:\Program Files (x86)\robotology\gsl-1.14\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalOptions> /machine:X86 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib;C:\Program Files (x86)\robotology\icub-1.1.15\lib\icubmodd.lib;C:\Program Files (x86)\robotology\yarp-2.3.63\lib\YARP_OSd.lib;C:\Program Files (x86)\robotology\yarp-2.3.63\lib\YARP_sigd.lib;C:\Program Files (x86)\robotology\yarp-2.3.63\lib\YARP_mathd.lib;C:\Program Files (x86)\robotology\yarp-2.3.63\lib\YARP_devd.lib;C:\Program Files (x86)\robotology\yarp-2.3.63\lib\YARP_named.lib;C:\Program Files (x86)\robotology\yarp-2.3.63\lib\YARP_initd.lib;C:\Program Files (x86)\robotology\icub-1.1.15\lib\cartesiancontrollerserverd.lib;C:\Program Files (x86)\robotology\icub-1.1.15\lib\cartesiancontrollerclientd.lib;C:\Program Files (x86)\robotology\icub-1.1.15\lib\iKind.lib;C:\Program Files (x86)\robotology\icub-1.1.15\lib\ctrlLibd.lib;C:\Program Files (x86)\robotology\gsl-1.14\lib\gsl.lib;C:\Program Files (x86)\robotology\gsl-1.14\lib\gslcblas.lib;C:\Program Files (x86)\robotology\ipopt-3.10.1\lib\libipoptD.lib;C:\Program Files (x86)\robotology\icub-1.1.15\lib\fcand.lib;C:\Program Files (x86)\robotology\icub-1.1.15\lib\gazecontrollerclientd.lib;C:\Program Files (x86)\robotology\icub-1.1.15\lib\logpolarclientd.lib;C:\Program Files (x86)\robotology\icub-1.1.15\lib\iCubDevd.lib;C:\Program Files (x86)\robotology\icub-1.1.15\lib\logpolard.lib;C:\Program Files (x86)\robotology\icub-1.1.15\lib\static_grabberd.lib;C:\Program Files (x86)\robotology\icub-1.1.15\lib\debugInterfaceClientd.lib;C:\Program Files (x86)\robotology\yarp-2.3.63\lib\YARP_devd.lib;C:\Program Files (x86)\robotology\yarp-2.3.63\lib\YARP_named.lib;C:\Program Files (x86)\robotology\yarp-2.3.63\lib\YARP_initd.lib;C:\Program Files (x86)\robotology\yarp-2.3.63\lib\YARP_mathd.lib;C:\Program Files (x86)\robotology\yarp-2.3.63\lib\YARP_sigd.lib;C:\Program Files (x86)\robotology\yarp-2.3.63\lib\YARP_OSd.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:/Program Files (x86)/robotology/opencv-git-snapshot-26-09-12/lib;C:/Program Files (x86)/robotology/opencv-git-snapshot-26-09-12/lib/$(Configuration);;C:/Program Files (x86)/robotology/opencv-git-snapshot-26-09-12/share/OpenCV/3rdparty/lib;C:/Program Files (x86)/robotology/opencv-git-snapshot-26-09-12/share/OpenCV/3rdparty/lib/$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <ImportLibrary>D:/icubDemo/build/MinSizeRel/torsoDemo.lib</ImportLibrary>
+      <ProgramDataBaseFile>D:/icubDemo/build/MinSizeRel/torsoDemo.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+      <Version></Version>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>C:\Program Files (x86)\robotology\yarp-2.3.63\cmake\..\include;C:\Program Files (x86)\robotology\icub-1.1.15\include;C:\Program Files (x86)\robotology\opencv-git-snapshot-26-09-12\include;C:\Program Files (x86)\robotology\opencv-git-snapshot-26-09-12\include\opencv;C:\Program Files (x86)\robotology\gsl-1.14\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>RelWithDebInfo/</AssemblerListingLocation>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR="RelWithDebInfo";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR=\"RelWithDebInfo\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Program Files (x86)\robotology\yarp-2.3.63\cmake\..\include;C:\Program Files (x86)\robotology\icub-1.1.15\include;C:\Program Files (x86)\robotology\opencv-git-snapshot-26-09-12\include;C:\Program Files (x86)\robotology\opencv-git-snapshot-26-09-12\include\opencv;C:\Program Files (x86)\robotology\gsl-1.14\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>C:\Program Files (x86)\robotology\yarp-2.3.63\cmake\..\include;C:\Program Files (x86)\robotology\icub-1.1.15\include;C:\Program Files (x86)\robotology\opencv-git-snapshot-26-09-12\include;C:\Program Files (x86)\robotology\opencv-git-snapshot-26-09-12\include\opencv;C:\Program Files (x86)\robotology\gsl-1.14\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalOptions> /machine:X86 /debug %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib;C:\Program Files (x86)\robotology\icub-1.1.15\lib\icubmodd.lib;C:\Program Files (x86)\robotology\yarp-2.3.63\lib\YARP_OSd.lib;C:\Program Files (x86)\robotology\yarp-2.3.63\lib\YARP_sigd.lib;C:\Program Files (x86)\robotology\yarp-2.3.63\lib\YARP_mathd.lib;C:\Program Files (x86)\robotology\yarp-2.3.63\lib\YARP_devd.lib;C:\Program Files (x86)\robotology\yarp-2.3.63\lib\YARP_named.lib;C:\Program Files (x86)\robotology\yarp-2.3.63\lib\YARP_initd.lib;C:\Program Files (x86)\robotology\icub-1.1.15\lib\cartesiancontrollerserverd.lib;C:\Program Files (x86)\robotology\icub-1.1.15\lib\cartesiancontrollerclientd.lib;C:\Program Files (x86)\robotology\icub-1.1.15\lib\iKind.lib;C:\Program Files (x86)\robotology\icub-1.1.15\lib\ctrlLibd.lib;C:\Program Files (x86)\robotology\gsl-1.14\lib\gsl.lib;C:\Program Files (x86)\robotology\gsl-1.14\lib\gslcblas.lib;C:\Program Files (x86)\robotology\ipopt-3.10.1\lib\libipoptD.lib;C:\Program Files (x86)\robotology\icub-1.1.15\lib\fcand.lib;C:\Program Files (x86)\robotology\icub-1.1.15\lib\gazecontrollerclientd.lib;C:\Program Files (x86)\robotology\icub-1.1.15\lib\logpolarclientd.lib;C:\Program Files (x86)\robotology\icub-1.1.15\lib\iCubDevd.lib;C:\Program Files (x86)\robotology\icub-1.1.15\lib\logpolard.lib;C:\Program Files (x86)\robotology\icub-1.1.15\lib\static_grabberd.lib;C:\Program Files (x86)\robotology\icub-1.1.15\lib\debugInterfaceClientd.lib;C:\Program Files (x86)\robotology\yarp-2.3.63\lib\YARP_devd.lib;C:\Program Files (x86)\robotology\yarp-2.3.63\lib\YARP_named.lib;C:\Program Files (x86)\robotology\yarp-2.3.63\lib\YARP_initd.lib;C:\Program Files (x86)\robotology\yarp-2.3.63\lib\YARP_mathd.lib;C:\Program Files (x86)\robotology\yarp-2.3.63\lib\YARP_sigd.lib;C:\Program Files (x86)\robotology\yarp-2.3.63\lib\YARP_OSd.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:/Program Files (x86)/robotology/opencv-git-snapshot-26-09-12/lib;C:/Program Files (x86)/robotology/opencv-git-snapshot-26-09-12/lib/$(Configuration);;C:/Program Files (x86)/robotology/opencv-git-snapshot-26-09-12/share/OpenCV/3rdparty/lib;C:/Program Files (x86)/robotology/opencv-git-snapshot-26-09-12/share/OpenCV/3rdparty/lib/$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ImportLibrary>D:/icubDemo/build/RelWithDebInfo/torsoDemo.lib</ImportLibrary>
+      <ProgramDataBaseFile>D:/icubDemo/build/RelWithDebInfo/torsoDemo.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+      <Version></Version>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <CustomBuild Include="..\CMakeLists.txt">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Building Custom Rule D:/icubDemo/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -HD:/icubDemo -BD:/icubDemo/build --check-stamp-file D:\icubDemo\build\CMakeFiles\generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">D:/icubDemo/CMakeLists.txt;D:\icubDemo\CMakeLists.txt;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeDetermineSystem.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeSystem.cmake.in;D:\icubDemo\build\CMakeFiles\3.0.0\CMakeSystem.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeDetermineCCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeDetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeDetermineCompilerId.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CompilerId\VS-10.vcxproj.in;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeFindBinUtils.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeClDeps.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeCCompiler.cmake.in;D:\icubDemo\build\CMakeFiles\3.0.0\CMakeCCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeDetermineCXXCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeDetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\Platform\Windows-CXX.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeDetermineCompilerId.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CompilerId\VS-10.vcxproj.in;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeFindBinUtils.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeClDeps.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeCXXCompiler.cmake.in;D:\icubDemo\build\CMakeFiles\3.0.0\CMakeCXXCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeSystemSpecificInformation.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeGenericSystem.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\Platform\Windows.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\Platform\WindowsPaths.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeCInformation.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\Platform\Windows-MSVC-C.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\Platform\Windows-MSVC.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeDetermineRCCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeRCCompiler.cmake.in;D:\icubDemo\build\CMakeFiles\3.0.0\CMakeRCCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeRCInformation.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeTestRCCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeCommonLanguageInclude.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeTestCCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeTestCompilerCommon.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeDetermineCompilerABI.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeParseImplicitLinkInfo.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeCCompilerABI.c;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeCCompiler.cmake.in;D:\icubDemo\build\CMakeFiles\3.0.0\CMakeCCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeCXXInformation.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\Platform\Windows-MSVC-CXX.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\Platform\Windows-MSVC.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeCommonLanguageInclude.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeTestCXXCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeTestCompilerCommon.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeDetermineCompilerABI.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeParseImplicitLinkInfo.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeCXXCompilerABI.cpp;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeCXXCompiler.cmake.in;D:\icubDemo\build\CMakeFiles\3.0.0\CMakeCXXCompiler.cmake;C:\Program Files (x86)\robotology\yarp-2.3.63\cmake\YARPConfigVersion.cmake;C:\Program Files (x86)\robotology\yarp-2.3.63\cmake\YARPConfig.cmake;C:\Program Files (x86)\robotology\yarp-2.3.63\lib\YARP\YARPTargets.cmake;C:\Program Files (x86)\robotology\yarp-2.3.63\lib\YARP\YARPTargets-debug.cmake;C:\Program Files (x86)\robotology\yarp-2.3.63\lib\YARP\YARPTargets-release.cmake;C:\Program Files (x86)\robotology\icub-1.1.15\cmake\icub-config.cmake;C:\Program Files (x86)\robotology\icub-1.1.15\lib\ICUB\icub-export-install.cmake;C:\Program Files (x86)\robotology\icub-1.1.15\lib\ICUB\icub-export-install-debug.cmake;C:\Program Files (x86)\robotology\icub-1.1.15\lib\ICUB\icub-export-install-includes.cmake;C:\Program Files (x86)\robotology\icub-1.1.15\lib\ICUB\icub-export-install-release.cmake;C:\Program Files (x86)\robotology\icub-1.1.15\lib\ICUB\icub-export-install-includes.cmake;D:\icubDemo\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">D:\icubDemo\build\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Building Custom Rule D:/icubDemo/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -HD:/icubDemo -BD:/icubDemo/build --check-stamp-file D:\icubDemo\build\CMakeFiles\generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">D:/icubDemo/CMakeLists.txt;D:\icubDemo\CMakeLists.txt;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeDetermineSystem.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeSystem.cmake.in;D:\icubDemo\build\CMakeFiles\3.0.0\CMakeSystem.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeDetermineCCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeDetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeDetermineCompilerId.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CompilerId\VS-10.vcxproj.in;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeFindBinUtils.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeClDeps.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeCCompiler.cmake.in;D:\icubDemo\build\CMakeFiles\3.0.0\CMakeCCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeDetermineCXXCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeDetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\Platform\Windows-CXX.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeDetermineCompilerId.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CompilerId\VS-10.vcxproj.in;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeFindBinUtils.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeClDeps.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeCXXCompiler.cmake.in;D:\icubDemo\build\CMakeFiles\3.0.0\CMakeCXXCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeSystemSpecificInformation.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeGenericSystem.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\Platform\Windows.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\Platform\WindowsPaths.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeCInformation.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\Platform\Windows-MSVC-C.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\Platform\Windows-MSVC.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeDetermineRCCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeRCCompiler.cmake.in;D:\icubDemo\build\CMakeFiles\3.0.0\CMakeRCCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeRCInformation.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeTestRCCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeCommonLanguageInclude.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeTestCCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeTestCompilerCommon.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeDetermineCompilerABI.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeParseImplicitLinkInfo.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeCCompilerABI.c;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeCCompiler.cmake.in;D:\icubDemo\build\CMakeFiles\3.0.0\CMakeCCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeCXXInformation.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\Platform\Windows-MSVC-CXX.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\Platform\Windows-MSVC.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeCommonLanguageInclude.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeTestCXXCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeTestCompilerCommon.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeDetermineCompilerABI.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeParseImplicitLinkInfo.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeCXXCompilerABI.cpp;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeCXXCompiler.cmake.in;D:\icubDemo\build\CMakeFiles\3.0.0\CMakeCXXCompiler.cmake;C:\Program Files (x86)\robotology\yarp-2.3.63\cmake\YARPConfigVersion.cmake;C:\Program Files (x86)\robotology\yarp-2.3.63\cmake\YARPConfig.cmake;C:\Program Files (x86)\robotology\yarp-2.3.63\lib\YARP\YARPTargets.cmake;C:\Program Files (x86)\robotology\yarp-2.3.63\lib\YARP\YARPTargets-debug.cmake;C:\Program Files (x86)\robotology\yarp-2.3.63\lib\YARP\YARPTargets-release.cmake;C:\Program Files (x86)\robotology\icub-1.1.15\cmake\icub-config.cmake;C:\Program Files (x86)\robotology\icub-1.1.15\lib\ICUB\icub-export-install.cmake;C:\Program Files (x86)\robotology\icub-1.1.15\lib\ICUB\icub-export-install-debug.cmake;C:\Program Files (x86)\robotology\icub-1.1.15\lib\ICUB\icub-export-install-includes.cmake;C:\Program Files (x86)\robotology\icub-1.1.15\lib\ICUB\icub-export-install-release.cmake;C:\Program Files (x86)\robotology\icub-1.1.15\lib\ICUB\icub-export-install-includes.cmake;D:\icubDemo\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">D:\icubDemo\build\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">Building Custom Rule D:/icubDemo/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -HD:/icubDemo -BD:/icubDemo/build --check-stamp-file D:\icubDemo\build\CMakeFiles\generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">D:/icubDemo/CMakeLists.txt;D:\icubDemo\CMakeLists.txt;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeDetermineSystem.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeSystem.cmake.in;D:\icubDemo\build\CMakeFiles\3.0.0\CMakeSystem.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeDetermineCCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeDetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeDetermineCompilerId.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CompilerId\VS-10.vcxproj.in;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeFindBinUtils.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeClDeps.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeCCompiler.cmake.in;D:\icubDemo\build\CMakeFiles\3.0.0\CMakeCCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeDetermineCXXCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeDetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\Platform\Windows-CXX.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeDetermineCompilerId.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CompilerId\VS-10.vcxproj.in;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeFindBinUtils.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeClDeps.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeCXXCompiler.cmake.in;D:\icubDemo\build\CMakeFiles\3.0.0\CMakeCXXCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeSystemSpecificInformation.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeGenericSystem.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\Platform\Windows.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\Platform\WindowsPaths.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeCInformation.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\Platform\Windows-MSVC-C.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\Platform\Windows-MSVC.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeDetermineRCCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeRCCompiler.cmake.in;D:\icubDemo\build\CMakeFiles\3.0.0\CMakeRCCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeRCInformation.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeTestRCCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeCommonLanguageInclude.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeTestCCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeTestCompilerCommon.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeDetermineCompilerABI.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeParseImplicitLinkInfo.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeCCompilerABI.c;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeCCompiler.cmake.in;D:\icubDemo\build\CMakeFiles\3.0.0\CMakeCCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeCXXInformation.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\Platform\Windows-MSVC-CXX.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\Platform\Windows-MSVC.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeCommonLanguageInclude.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeTestCXXCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeTestCompilerCommon.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeDetermineCompilerABI.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeParseImplicitLinkInfo.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeCXXCompilerABI.cpp;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeCXXCompiler.cmake.in;D:\icubDemo\build\CMakeFiles\3.0.0\CMakeCXXCompiler.cmake;C:\Program Files (x86)\robotology\yarp-2.3.63\cmake\YARPConfigVersion.cmake;C:\Program Files (x86)\robotology\yarp-2.3.63\cmake\YARPConfig.cmake;C:\Program Files (x86)\robotology\yarp-2.3.63\lib\YARP\YARPTargets.cmake;C:\Program Files (x86)\robotology\yarp-2.3.63\lib\YARP\YARPTargets-debug.cmake;C:\Program Files (x86)\robotology\yarp-2.3.63\lib\YARP\YARPTargets-release.cmake;C:\Program Files (x86)\robotology\icub-1.1.15\cmake\icub-config.cmake;C:\Program Files (x86)\robotology\icub-1.1.15\lib\ICUB\icub-export-install.cmake;C:\Program Files (x86)\robotology\icub-1.1.15\lib\ICUB\icub-export-install-debug.cmake;C:\Program Files (x86)\robotology\icub-1.1.15\lib\ICUB\icub-export-install-includes.cmake;C:\Program Files (x86)\robotology\icub-1.1.15\lib\ICUB\icub-export-install-release.cmake;C:\Program Files (x86)\robotology\icub-1.1.15\lib\ICUB\icub-export-install-includes.cmake;D:\icubDemo\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">D:\icubDemo\build\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">Building Custom Rule D:/icubDemo/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">setlocal
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -HD:/icubDemo -BD:/icubDemo/build --check-stamp-file D:\icubDemo\build\CMakeFiles\generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">D:/icubDemo/CMakeLists.txt;D:\icubDemo\CMakeLists.txt;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeDetermineSystem.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeSystem.cmake.in;D:\icubDemo\build\CMakeFiles\3.0.0\CMakeSystem.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeDetermineCCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeDetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeDetermineCompilerId.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CompilerId\VS-10.vcxproj.in;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeFindBinUtils.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeClDeps.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeCCompiler.cmake.in;D:\icubDemo\build\CMakeFiles\3.0.0\CMakeCCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeDetermineCXXCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeDetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\Platform\Windows-CXX.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeDetermineCompilerId.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CompilerId\VS-10.vcxproj.in;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeFindBinUtils.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeClDeps.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeCXXCompiler.cmake.in;D:\icubDemo\build\CMakeFiles\3.0.0\CMakeCXXCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeSystemSpecificInformation.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeGenericSystem.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\Platform\Windows.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\Platform\WindowsPaths.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeCInformation.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\Platform\Windows-MSVC-C.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\Platform\Windows-MSVC.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeDetermineRCCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeRCCompiler.cmake.in;D:\icubDemo\build\CMakeFiles\3.0.0\CMakeRCCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeRCInformation.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeTestRCCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeCommonLanguageInclude.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeTestCCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeTestCompilerCommon.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeDetermineCompilerABI.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeParseImplicitLinkInfo.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeCCompilerABI.c;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeCCompiler.cmake.in;D:\icubDemo\build\CMakeFiles\3.0.0\CMakeCCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeCXXInformation.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\Platform\Windows-MSVC-CXX.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\Platform\Windows-MSVC.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeCommonLanguageInclude.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeTestCXXCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeTestCompilerCommon.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeDetermineCompilerABI.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeParseImplicitLinkInfo.cmake;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeCXXCompilerABI.cpp;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeCXXCompiler.cmake.in;D:\icubDemo\build\CMakeFiles\3.0.0\CMakeCXXCompiler.cmake;C:\Program Files (x86)\robotology\yarp-2.3.63\cmake\YARPConfigVersion.cmake;C:\Program Files (x86)\robotology\yarp-2.3.63\cmake\YARPConfig.cmake;C:\Program Files (x86)\robotology\yarp-2.3.63\lib\YARP\YARPTargets.cmake;C:\Program Files (x86)\robotology\yarp-2.3.63\lib\YARP\YARPTargets-debug.cmake;C:\Program Files (x86)\robotology\yarp-2.3.63\lib\YARP\YARPTargets-release.cmake;C:\Program Files (x86)\robotology\icub-1.1.15\cmake\icub-config.cmake;C:\Program Files (x86)\robotology\icub-1.1.15\lib\ICUB\icub-export-install.cmake;C:\Program Files (x86)\robotology\icub-1.1.15\lib\ICUB\icub-export-install-debug.cmake;C:\Program Files (x86)\robotology\icub-1.1.15\lib\ICUB\icub-export-install-includes.cmake;C:\Program Files (x86)\robotology\icub-1.1.15\lib\ICUB\icub-export-install-release.cmake;C:\Program Files (x86)\robotology\icub-1.1.15\lib\ICUB\icub-export-install-includes.cmake;D:\icubDemo\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">D:\icubDemo\build\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\torsoDemo.cpp"  />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="D:/icubDemo/build/ZERO_CHECK.vcxproj">
+      <Project>0E26C76D-1CED-46B0-BE06-C8FF366FDBF6</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

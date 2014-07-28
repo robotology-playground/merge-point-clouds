@@ -1,0 +1,11 @@
+﻿Compilazione avviata 26/07/2014 14:16:19.
+     1>Progetto "D:\icubDemo\build\ALL_BUILD.vcxproj" sul nodo 2 (destinazioni: Build).
+     1>CustomBuild:
+         Building Custom Rule D:/icubDemo/CMakeLists.txt
+         CMake does not need to re-run because D:\icubDemo\build\CMakeFiles\generate.stamp is up-to-date.
+         Build all projects
+     1>Compilazione progetto "D:\icubDemo\build\ALL_BUILD.vcxproj" (destinazioni: Build) completata.
+
+Compilazione completata.
+
+Tempo trascorso 00:00:00.08

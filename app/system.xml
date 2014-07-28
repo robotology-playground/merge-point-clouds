@@ -1,0 +1,64 @@
+<application>
+
+  <name>System</name>
+
+  <module>
+      <name>iCub_SIM</name>
+      <node>localhost</node>
+      <tag>simulator</tag>
+  </module>
+
+  <module>
+      <name>iKinGazeCtrl</name>
+      <parameters>--from configSim.ini</parameters>
+      <node>localhost</node>
+      <tag>gaze controller</tag>
+  </module>
+
+<module>
+      <name>simCartesianControl</name>
+      <parameters>--no_legs</parameters>
+      <node>localhost</node>
+      <tag>controller</tag>
+  </module>
+  
+  <module>
+      <name>iKinCartesianSolver</name>
+      <parameters>--context simCartesianControl --part left_arm</parameters>
+      <node>localhost</node>
+      <tag>solver</tag>
+  </module>
+
+  <module>
+      <name>iKinCartesianSolver</name>
+      <parameters>--context simCartesianControl --part right_arm</parameters>
+      <node>localhost</node>
+      <tag>solver</tag>
+  </module>
+
+  <module>
+      <name>yarpview</name>
+      <parameters>--name /view/right</parameters>
+      <node>localhost</node>
+      <tag>left</tag>
+  </module>
+
+  <module>
+      <name>yarpview</name>
+      <parameters>--name /view/left</parameters>
+      <node>localhost</node>
+      <tag>right</tag>
+  </module>
+
+<connection persist="true">
+      <from>/icubSim/cam/left</from>
+      <to>/view/left</to>
+      <protocol>udp</protocol>
+  </connection>
+  
+<connection persist="true">
+      <from>/icubSim/cam/right</from>
+      <to>/view/right</to>
+      <protocol>udp</protocol>
+  </connection>
+ </application>
