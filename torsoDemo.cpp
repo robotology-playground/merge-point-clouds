@@ -11,46 +11,34 @@
 #include <iCub/ctrl/math.h>
 
 
-#define LEFT_ARM_HOME_POS_X	-0.24
-#define LEFT_ARM_HOME_POS_Y	-0.30
-#define LEFT_ARM_HOME_POS_Z	0.10
+#define LEFT_ARM_HOME_POS_X	-0.20
+#define LEFT_ARM_HOME_POS_Y	-0.35
+#define LEFT_ARM_HOME_POS_Z	0.12
 
-#define LEFT_ARM_HOME_OR_XA -0.07
-#define LEFT_ARM_HOME_OR_YA 0.140
-#define LEFT_ARM_HOME_OR_ZA -0.987
-#define LEFT_ARM_HOME_OR_THETA 2.687
+#define RIGHT_ARM_HOME_POS_X	-0.20
+#define RIGHT_ARM_HOME_POS_Y	0.35
+#define RIGHT_ARM_HOME_POS_Z	0.12
 
-#define RIGHT_ARM_HOME_POS_X	-0.24
-#define RIGHT_ARM_HOME_POS_Y	0.30
-#define RIGHT_ARM_HOME_POS_Z	0.10
+#define MAX_ARM_TRAJ_TIME  0.8
 
-#define RIGHT_ARM_HOME_OR_XA -0.225
-#define RIGHT_ARM_HOME_OR_YA 0.964
-#define RIGHT_ARM_HOME_OR_ZA 0.137
-#define RIGHT_ARM_HOME_OR_THETA 3.4
+#define TORSO_HOME_POS_ROLL		0.0
+#define TORSO_HOME_POS_PITCH	0.0
+#define TORSO_HOME_POS_YAW		0.0
 
-//#define ARM_TRAJECTORY_TIME 0.7
+#define TORSO_ACCELERATION_YAW		50.0
+#define TORSO_ACCELERATION_PITCH	50.0
+#define TORSO_ACCELERATION_ROLL		50.0
 
-#define TORSO_HOME_POS_ROLL		0
-#define TORSO_HOME_POS_PITCH		0
-#define TORSO_HOME_POS_YAW		0
-
-#define TORSO_ACCELERATION_YAW		50
-#define TORSO_ACCELERATION_PITCH	50
-#define TORSO_ACCELERATION_ROLL		50
-
-#define MAX_TORSO_VELOCITY 20.0
-#define KP				3.0
-#define MAX_TRAJ_TIME  2
+#define MAX_TORSO_VELOCITY 50.0
+#define KP				15.0
+#define MAX_TORSO_TRAJ_TIME  3.0
 
 #define GAZE_HOME_POS_X		-0.4
-#define GAZE_HOME_POS_Y		0
-#define GAZE_HOME_POS_Z		0.3
+#define GAZE_HOME_POS_Y		0.0
+#define GAZE_HOME_POS_Z		0.0
 
-//#define EYE_TIME 0.7
 
 #define ACK                     VOCAB3('a','c','k')
-#define QUIT                    VOCAB4('q','u','i','t')
 #define HOME					VOCAB4('h','o','m','e')
 #define SET                     VOCAB3('s','e','t')
 
@@ -63,6 +51,10 @@
 #define LOOK_AT					VOCAB4('l','o','o','k')
 #define TRACK					VOCAB4('t','r','a','c')
 #define GOTO					VOCAB4('g','o','t','o')
+
+#define NEXT					VOCAB4('n','e','x','t')
+#define STOP					VOCAB4('s','t','o','p')
+#define RUN						VOCAB4('r','u','n')
 
 YARP_DECLARE_DEVICES(icubmod)
 
@@ -103,9 +95,10 @@ class TorsoModule:public RFModule
 	int startupGazeContextID;
 	int startupArmLeftContextID;
 	int startupArmRightContextID;
-	int maxTorsoVelocity;
+	double maxTorsoVelocity;
 	double kp;
-	double maxTrajTime;
+	double maxTorsoTrajTime;
+	double maxArmTrajTime;
 
 	public:
 
@@ -138,7 +131,7 @@ class TorsoModule:public RFModule
 		Vector error;
 		int jointsNumber=0;
 		int i;
-		double time= 0;
+		double time= 0.0;
 		
 		itorsoVelocity->getAxes(&jointsNumber);
 		
@@ -168,7 +161,7 @@ class TorsoModule:public RFModule
 
 
 		while (norm(torsoVelocityCommand)>0.1){
-			if(Time::now()-time>maxTrajTime){
+			if(Time::now()-time>maxTorsoTrajTime){
 				cout<<"Max time reached."<<endl;
 				break;
 			}
@@ -202,17 +195,14 @@ class TorsoModule:public RFModule
         }
 
 		switch(command.get(0).asVocab()){
-		//case QUIT:
-		//	reply.addString("Closing application.");
-		//	return false;
 		case HOME:
 			if(command.size()>1)
 					switch(command.get(1).asVocab()){
                         case ARM:
 							icartLeft->goToPoseSync(leftArmHomePosition,leftArmHomeOrientation);
 							icartRight->goToPoseSync(rightArmHomePosition,rightArmHomeOrientation);
-							icartRight->waitMotionDone(0.2,3);
-							icartLeft->waitMotionDone(0.2,3);
+							icartRight->waitMotionDone(0.1,2);
+							icartLeft->waitMotionDone(0.1,2);
 							reply.addString("Arm home position reached.");
                             return true;
 						case TORSO:
@@ -221,14 +211,22 @@ class TorsoModule:public RFModule
 							return true;
 						case GAZE:
 							igaze->lookAtFixationPoint(gazeHomePosition);
-							igaze->waitMotionDone(0.2,3);
+							igaze->waitMotionDone(0.1,2);
 							reply.addString("Gaze home position reached.");
 							return true;
 						default:
 							reply.addString("Wrong device for home position.");
 							return true;
 						}
-			else{ //home everything!
+			else{
+				
+				icartLeft->goToPoseSync(leftArmHomePosition,leftArmHomeOrientation);
+				icartRight->goToPoseSync(rightArmHomePosition,rightArmHomeOrientation);
+				igaze->lookAtFixationPoint(gazeHomePosition);
+				exploreTorso(torsoHomePosition);
+				igaze->waitMotionDone(0.1,2);
+				icartRight->waitMotionDone(0.1,2);
+				icartLeft->waitMotionDone(0.1,2);
 				reply.addString("Ok, moving to home position.");
 				return true;
 			}
@@ -300,12 +298,10 @@ class TorsoModule:public RFModule
 				return true;
 			}
 			
-			
 			return true;
 
 		default:
                 RFModule::respond(command,reply);
-				//reply.addString("Uknown command; type help for list.");
 				return true;
 		}
         return true;
@@ -319,11 +315,12 @@ class TorsoModule:public RFModule
 		cout<<"Configuring module!"<<endl;
 
 		moduleName=rf.check("name",Value("torsoModule")).asString().c_str();
-		robotName=rf.check("robot",Value("icub")).asString().c_str();
+		robotName=rf.check("robot",Value("icubSim")).asString().c_str();
 		period=rf.check("period",Value(0.2)).asDouble();
 		kp=rf.check("kp",Value(KP)).asDouble();
-		maxTrajTime=rf.check("torsoTime",Value(MAX_TRAJ_TIME)).asDouble();
+		maxTorsoTrajTime=rf.check("torsoTime",Value(MAX_TORSO_TRAJ_TIME)).asDouble();
         maxTorsoVelocity=rf.check("maxTorsoVelocity",Value(MAX_TORSO_VELOCITY)).asDouble();
+		maxArmTrajTime=rf.check("armTime",Value(MAX_ARM_TRAJ_TIME)).asDouble();
 
 		handlerPort.open(("/"+moduleName+"/rpc:i").c_str());
         attach(handlerPort);
@@ -344,12 +341,6 @@ class TorsoModule:public RFModule
 		gazeHomePosition.push_back(GAZE_HOME_POS_Y);
 		gazeHomePosition.push_back(GAZE_HOME_POS_Z);
 		
-		//if(!igaze->setEyesTrajTime(maxTrajTime)){
-		//	cout << "Error in setting gaze trajectory time."<<endl;
-		//	return false;
-		//}
-
-
 		Property leftArmOption;
 		leftArmOption.put("device","cartesiancontrollerclient");
 		leftArmOption.put("remote",("/"+robotName+"/cartesianController/left_arm").c_str());
@@ -367,7 +358,13 @@ class TorsoModule:public RFModule
 		leftArmHomePosition.push_back(LEFT_ARM_HOME_POS_Y);
 		leftArmHomePosition.push_back(LEFT_ARM_HOME_POS_Z);
 		
-		icartLeft->setTrajTime(maxTrajTime);
+		cout<<"MAX ARM TRAJ TIME: "<< maxArmTrajTime<<endl;
+		icartLeft->setTrajTime(maxArmTrajTime);
+
+		icartLeft->getDOF(curDof);
+        newDof=curDof;
+		newDof[3]=0;
+		icartLeft->setDOF(newDof,curDof);
 		
 
 		Property rightArmOption;
@@ -387,14 +384,19 @@ class TorsoModule:public RFModule
 		rightArmHomePosition.push_back(RIGHT_ARM_HOME_POS_Y);
 		rightArmHomePosition.push_back(RIGHT_ARM_HOME_POS_Z);
 				
-		icartRight->setTrajTime(maxTrajTime);
+		icartRight->setTrajTime(maxArmTrajTime);
+
+		icartRight->getDOF(curDof);
+        newDof=curDof;
+		newDof[3]=0;
+		icartRight->setDOF(newDof,curDof);
 
 		computeArmOr();
 
 		Property torsoOptions;
 		torsoOptions.put("device", "remote_controlboard");
 		torsoOptions.put("remote",("/"+robotName+"/torso").c_str());
-		torsoOptions.put("local",("/"+moduleName+"/torso").c_str()); //local port names
+		torsoOptions.put("local",("/"+moduleName+"/torso").c_str()); 
 	
 		if(!clientTorso.open(torsoOptions)){
 			cout<<"Error opening torso client!"<<endl;
@@ -427,7 +429,6 @@ class TorsoModule:public RFModule
 
     bool close()
     {
-		//moduleRunning = false;
         handlerPort.close();
 
 		igaze->stopControl();
