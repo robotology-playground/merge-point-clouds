@@ -1,4 +1,4 @@
-﻿Compilazione avviata 28/07/2014 15:21:41.
+﻿Compilazione avviata 28/07/2014 16:09:02.
      1>Progetto "D:\icubDemo\build\ALL_BUILD.vcxproj" sul nodo 2 (destinazioni: Rebuild).
      1>CustomBuild:
          Building Custom Rule D:/icubDemo/CMakeLists.txt
@@ -8,4 +8,4 @@
 
 Compilazione completata.
 
-Tempo trascorso 00:00:00.12
+Tempo trascorso 00:00:00.14

@@ -8,6 +8,7 @@
 #include <yarp/dev/Drivers.h>
 #include <yarp/dev/all.h>
 #include <yarp/math/Math.h>
+#include <iCub/ctrl/math.h>
 
 
 #define LEFT_ARM_HOME_POS_X	-0.24
@@ -70,6 +71,7 @@ using namespace yarp::os;
 using namespace yarp::dev;
 using namespace yarp::sig;
 using namespace yarp::math;
+using namespace iCub::ctrl;
 
 
 class TorsoModule:public RFModule
@@ -116,6 +118,16 @@ class TorsoModule:public RFModule
     {
 		return true;
     }
+
+	bool computeArmOr()
+	{
+		Matrix R(3,3);
+		R(0,0)= -1.0; R(0,1)= 0.0; R(0,2)= 0.0;
+		R(1,0)= 0.0; R(1,1)= 0.0; R(1,2)=-1.0; 
+		R(2,0)=-0.0; R(2,1)= -1.0; R(2,2)= 0.0;
+		leftArmHomeOrientation = rightArmHomeOrientation = dcm2axis(R);
+		return true;
+	}
 
 	bool exploreTorso(Vector target)
 	{
@@ -200,7 +212,7 @@ class TorsoModule:public RFModule
 							icartLeft->goToPoseSync(leftArmHomePosition,leftArmHomeOrientation);
 							icartRight->goToPoseSync(rightArmHomePosition,rightArmHomeOrientation);
 							icartRight->waitMotionDone(0.2,3);
-							icartLeft->waitMotionDone();
+							icartLeft->waitMotionDone(0.2,3);
 							reply.addString("Arm home position reached.");
                             return true;
 						case TORSO:
@@ -209,7 +221,7 @@ class TorsoModule:public RFModule
 							return true;
 						case GAZE:
 							igaze->lookAtFixationPoint(gazeHomePosition);
-							igaze->waitMotionDone();
+							igaze->waitMotionDone(0.2,3);
 							reply.addString("Gaze home position reached.");
 							return true;
 						default:
@@ -227,7 +239,7 @@ class TorsoModule:public RFModule
 				gazePosition[1] = command.get(2).asDouble();
 				gazePosition[2] = command.get(3).asDouble();
 				cout << igaze->lookAtFixationPoint(gazePosition)<<endl;
-				igaze->waitMotionDone(0.04);
+				igaze->waitMotionDone(0.2,3);
 				reply.addString("Gaze position reached.");
 				return true;
 			}
@@ -352,11 +364,7 @@ class TorsoModule:public RFModule
 		leftArmHomePosition.push_back(LEFT_ARM_HOME_POS_X);
 		leftArmHomePosition.push_back(LEFT_ARM_HOME_POS_Y);
 		leftArmHomePosition.push_back(LEFT_ARM_HOME_POS_Z);
-		leftArmHomeOrientation.push_back(LEFT_ARM_HOME_OR_XA);
-		leftArmHomeOrientation.push_back(LEFT_ARM_HOME_OR_YA);
-		leftArmHomeOrientation.push_back(LEFT_ARM_HOME_OR_ZA);
-		leftArmHomeOrientation.push_back(LEFT_ARM_HOME_OR_THETA);
-
+		
 		icartLeft->setTrajTime(maxTrajTime);
 		
 
@@ -376,13 +384,10 @@ class TorsoModule:public RFModule
 		rightArmHomePosition.push_back(RIGHT_ARM_HOME_POS_X);
 		rightArmHomePosition.push_back(RIGHT_ARM_HOME_POS_Y);
 		rightArmHomePosition.push_back(RIGHT_ARM_HOME_POS_Z);
-		rightArmHomeOrientation.push_back(RIGHT_ARM_HOME_OR_XA);
-		rightArmHomeOrientation.push_back(RIGHT_ARM_HOME_OR_YA);
-		rightArmHomeOrientation.push_back(RIGHT_ARM_HOME_OR_ZA);
-		rightArmHomeOrientation.push_back(RIGHT_ARM_HOME_OR_THETA);
-
+				
 		icartRight->setTrajTime(maxTrajTime);
 
+		computeArmOr();
 
 		Property torsoOptions;
 		torsoOptions.put("device", "remote_controlboard");
