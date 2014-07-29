@@ -15,7 +15,7 @@ icubcontrib_set_default_prefix()
 
 include_directories(${YARP_INCLUDE_DIRS} ${ICUB_INCLUDE_DIRS})
 add_executable(${PROJECTNAME} torsoDemo.cpp)
-target_link_libraries(${PROJECTNAME} icubmod ${YARP_LIBRARIES})
+target_link_libraries(${PROJECTNAME} icubmod ctrlLib ${YARP_LIBRARIES})
 install(TARGETS ${PROJECTNAME} DESTINATION bin)
 icubcontrib_add_uninstall_target()
 

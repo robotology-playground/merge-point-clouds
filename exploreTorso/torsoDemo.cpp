@@ -1,13 +1,14 @@
 #include <iostream>
 #include <string>
-#include <yarp/sig/Vector.h>
+#include <gsl/gsl_math.h>
+#include <yarp/sig/all.h>
 #include <yarp/os/Time.h>
 #include <yarp/os/RFModule.h>
 #include <yarp/os/Module.h>
 #include <yarp/os/Network.h>
 #include <yarp/dev/Drivers.h>
 #include <yarp/dev/all.h>
-#include <yarp/math/Math.h>
+
 #include <iCub/ctrl/math.h>
 #include <yarp/os/RpcClient.h>
 
@@ -30,8 +31,8 @@
 #define TORSO_ACCELERATION_PITCH	50.0
 #define TORSO_ACCELERATION_ROLL		50.0
 
-#define MAX_TORSO_VELOCITY 40.0
-#define KP				15.0
+#define MAX_TORSO_VELOCITY 30.0
+#define KP				10.0
 #define MAX_TORSO_TRAJ_TIME  4.0
 
 #define GAZE_HOME_POS_X		-0.5
@@ -125,7 +126,7 @@ class TorsoModule:public RFModule
 
 	bool computeArmOr()
 	{
-		Matrix R(3,3);
+	    Matrix R(3,3);
 		R(0,0)= -1.0; R(0,1)= 0.0; R(0,2)= 0.0;
 		R(1,0)= 0.0; R(1,1)= sin(CTRL_DEG2RAD*30); R(1,2)=-cos(CTRL_DEG2RAD*30); 
 		R(2,0)=-0.0; R(2,1)= -cos(CTRL_DEG2RAD*30); R(2,2)= -sin(CTRL_DEG2RAD*30);
@@ -275,10 +276,19 @@ class TorsoModule:public RFModule
 						reply.addString("Error in getting objects.");
 						return true;
 				}
-				cout<<bReply.get(1).asList()->find("entity").toString()<<endl;
+				//cout<<bReply.get(1).asList()->find("position_3d").asList()->get(0).asDouble()<<endl;
+                Vector gazePosition(3);
+				gazePosition[0] = bReply.get(1).asList()->find("position_3d").asList()->get(0).asDouble();
+                gazePosition[1] = bReply.get(1).asList()->find("position_3d").asList()->get(1).asDouble();
+                gazePosition[2] = bReply.get(1).asList()->find("position_3d").asList()->get(2).asDouble();
+
+				//gazePosition[1] = command.get(2).asDouble();
+				//gazePosition[2] = command.get(3).asDouble();
+				cout << igaze->lookAtFixationPoint(gazePosition)<<endl;
+				igaze->waitMotionDone(0.2,3);
+				reply.addString("Gaze position reached.");
 				
-				
-				reply.addString("Ok, request done.");
+				//reply.addString("Ok, request done.");
 				return true;
 			}
 
@@ -415,7 +425,7 @@ class TorsoModule:public RFModule
 		cout<<"Configuring module!"<<endl;
 
 		moduleName=rf.check("name",Value("torsoModule")).asString().c_str();
-		robotName=rf.check("robot",Value("icubSim")).asString().c_str();
+		robotName=rf.check("robot",Value("icub")).asString().c_str();
 		period=rf.check("period",Value(0.2)).asDouble();
 		kp=rf.check("kp",Value(KP)).asDouble();
 		maxTorsoTrajTime=rf.check("torsoTime",Value(MAX_TORSO_TRAJ_TIME)).asDouble();
@@ -426,7 +436,7 @@ class TorsoModule:public RFModule
         attach(handlerPort);
 
 		objectsPort.open(("/"+moduleName+"/OPC:io").c_str());
-		if(!objectsPort.addOutput("/objectsPropertiesCollector/rpc")){
+		if(!objectsPort.addOutput("/memory/rpc")){
 			cout<<"Error connecting to OPC client!"<<endl;
 			return false;
 		}
