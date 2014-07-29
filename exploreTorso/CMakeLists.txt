@@ -13,8 +13,6 @@ include(ICUBcontribHelpers)
 include(ICUBcontribOptions)
 icubcontrib_set_default_prefix()
 
-list(APPEND CMAKE_MODULE_PATH ${YARP_MODULE_PATH})
-
 include_directories(${YARP_INCLUDE_DIRS} ${ICUB_INCLUDE_DIRS})
 add_executable(${PROJECTNAME} torsoDemo.cpp)
 target_link_libraries(${PROJECTNAME} icubmod ${YARP_LIBRARIES})
