@@ -37,6 +37,7 @@
 #define GAZE_HOME_POS_X		-0.5
 #define GAZE_HOME_POS_Y		0.0
 #define GAZE_HOME_POS_Z		0.1
+#define DEFAULT_VERGENCE	5
 
 
 #define ACK                     VOCAB3('a','c','k')
@@ -271,12 +272,12 @@ class TorsoModule:public RFModule
 				objectsPort.write(bGet,bReply);
 
 				if(bReply.size()==0 || bReply.get(0).asVocab()!=Vocab::encode("ack")){
-						reply.addString("Error in ");
+						reply.addString("Error in getting objects.");
 						return true;
 				}
-
-
-
+				cout<<bReply.get(1).asList()->find("entity").toString()<<endl;
+				
+				
 				reply.addString("Ok, request done.");
 				return true;
 			}
@@ -335,19 +336,17 @@ class TorsoModule:public RFModule
 			}
 
 		case BLOCK:
-			if(command.size()==3)
+			if(command.size()>1)
 				switch(command.get(1).asVocab()){
 						case GAZE:
-							if (command.get(2).asString() == "on"){
-								igaze->blockEyes(true);
+							if(command.size()==3){
+								igaze->blockEyes(command.get(2).asDouble());
 								reply.addString("Gaze blocking mode enabled.");
 							}
-							else if (command.get(2).asString() == "off"){
-								igaze->blockEyes(false);
-								reply.addString("Gaze blocking mode disabled.");
+							else{
+								igaze->blockEyes(DEFAULT_VERGENCE);
+								reply.addString("Default vergence set.");
 							}
-							else
-								reply.addString("Wrong parameter for blocking: on/off");
 							return true;
 						default:
 								reply.addString("Wrong device for blocking mode.");
@@ -533,6 +532,28 @@ class TorsoModule:public RFModule
 		index = 0;
 		running = false;
 		cout<<endl;
+
+/*
+		Bottle bAdd, bReply;
+		bAdd.addVocab(Vocab::encode("add"));
+		Bottle &bTempAdd=bAdd.addList();
+
+		Bottle &bEntity=bTempAdd.addList();
+		bEntity.addString("entity"); bEntity.addString("action");
+
+		Bottle &bName=bTempAdd.addList();
+		bName.addString("name"); bName.addString("ball");
+
+		Bottle &bX= bTempAdd.addList();
+		bX.addString("x"); bX.addDouble(10.0);
+
+		Bottle &bY= bTempAdd.addList();
+		bY.addString("y"); bY.addDouble(-10.0);
+
+		objectsPort.write(bAdd,bReply);
+		cout<<bReply.get(0).asVocab()<<endl;
+		*/
+
         return true;
     }
 

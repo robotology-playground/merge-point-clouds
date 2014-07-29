@@ -50,6 +50,13 @@
       <tag>right</tag>
   </module>
 
+  <module>
+      <name>objectsPropertiesCollector</name>
+      <parameters></parameters>
+      <node>localhost</node>
+      <tag>OPC</tag>
+  </module>
+
 <connection persist="true">
       <from>/icubSim/cam/left</from>
       <to>/view/left</to>
