@@ -32,7 +32,7 @@
 #define TORSO_ACCELERATION_ROLL		1e9
 
 #define MAX_TORSO_VELOCITY 20.0
-#define KP				0.9
+#define KP				15
 #define MAX_TORSO_TRAJ_TIME  4.0
 
 #define GAZE_HOME_POS_X		-0.50
@@ -61,6 +61,8 @@
 
 #define BLOCK					VOCAB4('b','l','o','c')
 
+#define GET						VOCAB3('g','e','t')
+
 YARP_DECLARE_DEVICES(icubmod)
 
 using namespace std;
@@ -79,6 +81,7 @@ class TorsoModule:public RFModule
     double period;
 	string moduleName;
 	string robotName;
+	string OPCName;
 	Vector leftArmHomePosition;
 	Vector leftArmHomeOrientation;
 	Vector rightArmHomePosition;
@@ -101,8 +104,11 @@ class TorsoModule:public RFModule
 	IEncoders *iTorsoEncoder;
 
 	int startupGazeContextID;
+	int currentGazeContextID;
 	int startupArmLeftContextID;
+	int currentArmLeftContextID;
 	int startupArmRightContextID;
+	int currentArmRightContextID;
 	int index;
 
 	double maxTorsoVelocity;
@@ -219,10 +225,22 @@ class TorsoModule:public RFModule
 			if(command.size()>1)
 					switch(command.get(1).asVocab()){
                         case ARM:
+							int tempCxL,tempCxR;
+							icartLeft->storeContext(&tempCxL);
+							icartLeft->storeContext(&tempCxR);
+							icartLeft->restoreContext(currentArmLeftContextID);
+							icartLeft->restoreContext(currentArmRightContextID);
+
 							icartLeft->goToPoseSync(leftArmHomePosition,leftArmHomeOrientation);
 							icartRight->goToPoseSync(rightArmHomePosition,rightArmHomeOrientation);
+							
 							icartRight->waitMotionDone(0.1,2);
 							icartLeft->waitMotionDone(0.1,2);
+							
+							icartLeft->restoreContext(tempCxR);
+							icartLeft->restoreContext(tempCxL);
+							icartLeft->deleteContext(tempCxR);
+							icartLeft->deleteContext(tempCxL);
 							reply.addString("Arm home position reached.");
                             return true;
 						case TORSO:
@@ -230,8 +248,15 @@ class TorsoModule:public RFModule
 							reply.addString("Torso home position reached.");
 							return true;
 						case GAZE:
+							int tempCx;
+							igaze->storeContext(&tempCx);
+							igaze->restoreContext(currentGazeContextID);
+							
 							igaze->lookAtFixationPoint(gazeHomePosition);
 							igaze->waitMotionDone(0.1,2);
+
+							igaze->restoreContext(tempCx);
+							igaze->deleteContext(tempCx);
 							reply.addString("Gaze home position reached.");
 							return true;
 						default:
@@ -239,6 +264,16 @@ class TorsoModule:public RFModule
 							return true;
 						}
 			else{
+				int tempCxL,tempCxR,tempCx;
+				icartLeft->storeContext(&tempCxL);
+				icartLeft->storeContext(&tempCxR);
+				icartLeft->restoreContext(currentArmLeftContextID);
+				icartLeft->restoreContext(currentArmRightContextID);
+				
+				igaze->storeContext(&tempCx);
+				igaze->restoreContext(currentGazeContextID);
+
+
 				icartLeft->goToPoseSync(leftArmHomePosition,leftArmHomeOrientation);
 				icartRight->goToPoseSync(rightArmHomePosition,rightArmHomeOrientation);
 				igaze->lookAtFixationPoint(gazeHomePosition);
@@ -246,6 +281,14 @@ class TorsoModule:public RFModule
 				igaze->waitMotionDone(0.1,2);
 				icartRight->waitMotionDone(0.1,2);
 				icartLeft->waitMotionDone(0.1,2);
+
+				icartLeft->restoreContext(tempCxR);
+				igaze->restoreContext(tempCx);
+				icartLeft->restoreContext(tempCxL);
+				icartLeft->deleteContext(tempCxR);
+				icartLeft->deleteContext(tempCxL);
+				igaze->deleteContext(tempCx);
+							
 				reply.addString("Ok, moving to home position.");
 				return true;
 			}
@@ -257,54 +300,104 @@ class TorsoModule:public RFModule
 				bTempAsk.addString("name");
 				bTempAsk.addString("==");
 				bTempAsk.addString(command.get(1).asString());
-				cout<<"Sending request"<<endl;
 				objectsPort.write(bAsk,bReply);
-				
+				cout<<"first"<<endl;
 				if(bReply.size()==0 || bReply.get(0).asVocab()!=Vocab::encode("ack") || bReply.get(1).asList()->check("id")==false || 
 					bReply.get(1).asList()->find("id").asList()->size()==0){
 						reply.addString("Oject not found in db.");
 						return true;
 				}
-
-
 				bGet.addVocab(Vocab::encode("get"));
 				Bottle &bTempGet=bGet.addList().addList();
 				bTempGet.addString("id");
 				bTempGet.addInt(bReply.get(1).asList()->find("id").asList()->get(0).asInt());
 				objectsPort.write(bGet,bReply);
-
-				if(bReply.size()==0 || bReply.get(0).asVocab()!=Vocab::encode("ack")){
-						reply.addString("Error in getting objects.");
+				cout<<"second"<<endl;
+				if(bReply.size()==0 || bReply.get(0).asVocab()!=Vocab::encode("ack") || bReply.get(1).asList()->check("position_3d")==false ||
+					bReply.get(1).asList()->find("position_3d").asList()->size()==0){
+						reply.addString("Missing object's parameters.");
 						return true;
 				}
-				//cout<<bReply.get(1).asList()->find("position_3d").asList()->get(0).asDouble()<<endl;
+				cout<<"third"<<endl;
                 Vector gazePosition(3);
 				gazePosition[0] = bReply.get(1).asList()->find("position_3d").asList()->get(0).asDouble();
                 gazePosition[1] = bReply.get(1).asList()->find("position_3d").asList()->get(1).asDouble();
                 gazePosition[2] = bReply.get(1).asList()->find("position_3d").asList()->get(2).asDouble();
 
-				//gazePosition[1] = command.get(2).asDouble();
-				//gazePosition[2] = command.get(3).asDouble();
-				cout << igaze->lookAtFixationPoint(gazePosition)<<endl;
+				int tempCx;
+				igaze->storeContext(&tempCx);
+				igaze->restoreContext(currentGazeContextID);
+							
+				igaze->lookAtFixationPoint(gazePosition);
 				igaze->waitMotionDone(0.2,3);
+				
+				igaze->restoreContext(tempCx);
+				igaze->deleteContext(tempCx);
+				
 				reply.addString("Gaze position reached.");
 				
-				//reply.addString("Ok, request done.");
 				return true;
 			}
 
 			else if(command.size()==4){
 				Vector gazePosition(3);
+				int tempCx;
+
 				gazePosition[0] = command.get(1).asDouble();
 				gazePosition[1] = command.get(2).asDouble();
 				gazePosition[2] = command.get(3).asDouble();
-				cout << igaze->lookAtFixationPoint(gazePosition)<<endl;
+				
+				igaze->storeContext(&tempCx);
+				igaze->restoreContext(currentGazeContextID);
+							
+				igaze->lookAtFixationPoint(gazePosition);
 				igaze->waitMotionDone(0.2,3);
+				
+				igaze->restoreContext(tempCx);
+				igaze->deleteContext(tempCx);
 				reply.addString("Gaze position reached.");
 				return true;
 			}
 			else{
 				reply.addString("Wrong number of parameters for lookAt.");
+				return true;
+			}
+		case GET:
+			if(command.size()==2){
+				Bottle bAsk,bReply, bGet;
+				bAsk.addVocab(Vocab::encode("ask"));
+				Bottle &bTempAsk=bAsk.addList().addList();
+				bTempAsk.addString("name");
+				bTempAsk.addString("==");
+				bTempAsk.addString(command.get(1).asString());
+				objectsPort.write(bAsk,bReply);
+				if(bReply.size()==0 || bReply.get(0).asVocab()!=Vocab::encode("ack") || bReply.get(1).asList()->check("id")==false || 
+					bReply.get(1).asList()->find("id").asList()->size()==0){
+						reply.addString("Oject not found in db.");
+						return true;
+				}
+				bGet.addVocab(Vocab::encode("get"));
+				Bottle &bTempGet=bGet.addList().addList();
+				bTempGet.addString("id");
+				bTempGet.addInt(bReply.get(1).asList()->find("id").asList()->get(0).asInt());
+				objectsPort.write(bGet,bReply);
+				if(bReply.size()==0 || bReply.get(0).asVocab()!=Vocab::encode("ack") || bReply.get(1).asList()->check("position_2d")==false ||
+					bReply.get(1).asList()->find("position_2d").asList()->size()==0){
+						reply.addString("Missing object's parameters.");
+						return true;
+				}
+                Vector objPosition(2);
+				objPosition[0] = bReply.get(1).asList()->find("position_2d").asList()->get(0).asInt();
+                objPosition[1] = bReply.get(1).asList()->find("position_2d").asList()->get(1).asInt();
+				Bottle &ack  = reply.addList();
+				ack.addVocab(VOCAB3('A','C','K'));
+				Bottle &coord  = reply.addList();
+				coord.addInt(objPosition[0]);
+				coord.addInt(objPosition[1]);
+				return true;
+			}
+			else{
+				reply.addString("Wrong number of parameters for get.");
 				return true;
 			}
 		case TRACK:
@@ -314,11 +407,16 @@ class TorsoModule:public RFModule
 							if (command.get(2).asString() == "on"){
 								icartLeft->setTrackingMode(true);
 								icartRight->setTrackingMode(true);
+								icartRight->storeContext(&currentArmRightContextID);
+								icartLeft->storeContext(&currentArmLeftContextID);
 								reply.addString("Arm tracking mode enabled.");
+
 							}
 							else if (command.get(2).asString() == "off"){
 								icartLeft->setTrackingMode(false);
 								icartRight->setTrackingMode(false);
+								icartRight->storeContext(&currentArmRightContextID);
+								icartLeft->storeContext(&currentArmLeftContextID);
 								reply.addString("Arm tracking mode disabled.");
 							}
 							else
@@ -327,10 +425,12 @@ class TorsoModule:public RFModule
 						case GAZE:
 							if (command.get(2).asString() == "on"){
 								igaze->setTrackingMode(true);
+								igaze->storeContext(&currentGazeContextID);
 								reply.addString("Gaze tracking mode enabled.");
 							}
 							else if (command.get(2).asString() == "off"){
 								igaze->setTrackingMode(false);
+								igaze->storeContext(&currentGazeContextID);
 								reply.addString("Gaze tracking mode disabled.");
 							}
 							else
@@ -352,10 +452,12 @@ class TorsoModule:public RFModule
 						case GAZE:
 							if(command.size()==3){
 								igaze->blockEyes(command.get(2).asDouble());
+								igaze->storeContext(&currentGazeContextID);
 								reply.addString("Gaze blocking mode enabled.");
 							}
 							else{
 								igaze->blockEyes(DEFAULT_VERGENCE);
+								igaze->storeContext(&currentGazeContextID);
 								reply.addString("Default vergence set.");
 							}
 							return true;
@@ -427,6 +529,8 @@ class TorsoModule:public RFModule
 
 		moduleName=rf.check("name",Value("torsoModule")).asString().c_str();
 		robotName=rf.check("robot",Value("icub")).asString().c_str();
+		OPCName=rf.check("OPC",Value("objectsPropertiesCollector")).asString().c_str();
+
 		period=rf.check("period",Value(0.2)).asDouble();
 		kp=rf.check("kp",Value(KP)).asDouble();
 		maxTorsoTrajTime=rf.check("torsoTime",Value(MAX_TORSO_TRAJ_TIME)).asDouble();
@@ -437,7 +541,7 @@ class TorsoModule:public RFModule
         attach(handlerPort);
 
 		objectsPort.open(("/"+moduleName+"/OPC:io").c_str());
-		if(!objectsPort.addOutput("/objectsPropertiesCollector/rpc")){
+		if(!objectsPort.addOutput(("/"+OPCName+"/rpc").c_str())){
 			cout<<"Error connecting to OPC client!"<<endl;
 			return false;
 		}
@@ -453,7 +557,6 @@ class TorsoModule:public RFModule
 		}
 		clientGazeCtrl.view(igaze);
 		igaze->storeContext(&startupGazeContextID);
-		cout<<"Setting:"<<endl;
 		gazeHomePosition.push_back(GAZE_HOME_POS_X);
 		gazeHomePosition.push_back(GAZE_HOME_POS_Y);
 		gazeHomePosition.push_back(GAZE_HOME_POS_Z);
@@ -463,13 +566,10 @@ class TorsoModule:public RFModule
 		leftArmOption.put("remote",("/"+robotName+"/cartesianController/left_arm").c_str());
 		leftArmOption.put("local",("/"+moduleName+"/left_arm").c_str());
 
-        cout<<"IO"<<endl;
 		if(!clientArmLeft.open(leftArmOption)){
-            cout<<"IO2"<<endl;
 			cout<<"Error opening left arm client!"<<endl;
 			return false;
 		}
-        cout<<"IO3"<<endl;
 
 		clientArmLeft.view(icartLeft);
 		icartLeft->storeContext(&startupArmLeftContextID);
@@ -478,14 +578,15 @@ class TorsoModule:public RFModule
 		leftArmHomePosition.push_back(LEFT_ARM_HOME_POS_Y);
 		leftArmHomePosition.push_back(LEFT_ARM_HOME_POS_Z);
 		
-		cout<<"MAX ARM TRAJ TIME: "<< maxArmTrajTime<<endl;
 		icartLeft->setTrajTime(maxArmTrajTime);
 
-		/*icartLeft->getDOF(curDof);
+
+		icartLeft->getDOF(curDof);
         newDof=curDof;
-		newDof[3]=0;
-		icartLeft->setDOF(newDof,curDof);*/
-		
+		newDof[0]=1.0;
+		newDof[2]=1.0;
+		icartLeft->setDOF(newDof,curDof);
+		icartLeft->storeContext(&currentArmLeftContextID);
 
 		Property rightArmOption;
 		rightArmOption.put("device","cartesiancontrollerclient");
@@ -508,12 +609,11 @@ class TorsoModule:public RFModule
 
 		icartRight->getDOF(curDof);
         newDof=curDof;
-		newDof[3]=0;
+		newDof[0]=1.0;
+		newDof[2]=1.0;
 		icartRight->setDOF(newDof,curDof);
 
-cout<<"DONE2"<<endl;
 		computeArmOr();
-cout<<"DONE3"<<endl;
 		Property torsoOptions;
 		torsoOptions.put("device", "remote_controlboard");
 		torsoOptions.put("remote",("/"+robotName+"/torso").c_str());
@@ -541,15 +641,12 @@ cout<<"DONE3"<<endl;
 		waypoints(0,0) = 0.0; waypoints(0,1) = -15.0; waypoints(0,2) = 10.0; 
 		waypoints(1,0) = 0.0; waypoints(1,1) = 15.0; waypoints(1,2) = 10.0; 
 		waypoints(2,0) = 0.0; waypoints(2,1) = 0.0; waypoints(2,2) = 20.0; 
-		//waypoints(3,0) = -10.0; waypoints(3,1) = -10.0; waypoints(3,2) = 20.0; 
-		//waypoints(4,0) = -30.0; waypoints(4,1) = -20.0; waypoints(4,2) = 25.0; 
 		
 		index = 0;
 		running = false;
-		cout<<"DONE"<<endl;
 
-/*
-		Bottle bAdd, bReply;
+
+		/*Bottle bAdd, bReply;
 		bAdd.addVocab(Vocab::encode("add"));
 		Bottle &bTempAdd=bAdd.addList();
 
@@ -557,13 +654,13 @@ cout<<"DONE3"<<endl;
 		bEntity.addString("entity"); bEntity.addString("action");
 
 		Bottle &bName=bTempAdd.addList();
-		bName.addString("name"); bName.addString("ball");
+		bName.addString("name"); bName.addString("asd");
 
 		Bottle &bX= bTempAdd.addList();
-		bX.addString("x"); bX.addDouble(10.0);
-
-		Bottle &bY= bTempAdd.addList();
-		bY.addString("y"); bY.addDouble(-10.0);
+		bX.addString("position_2d"); 
+		Bottle &coord = bX.addList();	
+		coord.addDouble(10);
+		coord.addDouble(100);
 
 		objectsPort.write(bAdd,bReply);
 		cout<<bReply.get(0).asVocab()<<endl;
@@ -590,6 +687,7 @@ cout<<"DONE3"<<endl;
 		igaze->stopControl();
 		igaze->restoreContext(startupGazeContextID);
 		igaze->deleteContext(startupGazeContextID);
+		igaze->deleteContext(currentGazeContextID);
 
 		if (clientGazeCtrl.isValid())
 			clientGazeCtrl.close();
@@ -597,6 +695,7 @@ cout<<"DONE3"<<endl;
 		icartLeft->stopControl();
 		icartLeft->restoreContext(startupArmLeftContextID);
 		icartLeft->deleteContext(startupArmLeftContextID);
+		icartLeft->deleteContext(currentArmLeftContextID);
 
 		if (clientArmLeft.isValid())
 			clientArmLeft.close();
@@ -604,6 +703,7 @@ cout<<"DONE3"<<endl;
 		icartRight->stopControl();
 		icartRight->restoreContext(startupArmRightContextID);
 		icartRight->deleteContext(startupArmRightContextID);
+		icartRight->deleteContext(currentArmRightContextID);
 
 		if (clientArmLeft.isValid())
 			clientArmLeft.close();
@@ -613,7 +713,6 @@ cout<<"DONE3"<<endl;
 		if (clientTorso.isValid())
 		clientTorso.close();
 		
-		cout<<endl;
         return true;
     }
 };
