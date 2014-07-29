@@ -13,7 +13,9 @@
 #include <pcl/filters/voxel_grid.h>
 #include <pcl/features/normal_3d.h>
 
-#include <dirent.h>
+#ifdef _WIN32
+    #include "dirent.h"
+#endif
 
 typedef pcl::PointXYZRGB PointT;
 typedef pcl::PointCloud<PointT> PointCloudT;
@@ -251,6 +253,8 @@ int main(int argc, char * argv[])
 
     MergeModule module;
     ResourceFinder rf;
+    rf.setDefaultContext("merge-point-clouds");
+    rf.setDefaultConfigFile("config.ini");
     rf.configure(argc, argv);
     rf.setVerbose(true);
 

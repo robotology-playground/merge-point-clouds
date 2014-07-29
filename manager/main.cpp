@@ -158,7 +158,7 @@ protected:
 public:
     bool configure(ResourceFinder &rf)
     {
-        string name=rf.check("name",Value("merge-clouds-manager")).asString().c_str();
+        string name=rf.check("name",Value("manager")).asString().c_str();
         rpc.open(("/"+name+"/rpc").c_str());
         attach(rpc);
         out_explorer.open(("/"+name+"/explorer:o").c_str());
@@ -176,12 +176,7 @@ int main(int argc, char *argv[])
 
     ResourceFinder rf;
     rf.setVerbose(true);
-    rf.setDefaultContext("gesture-recognition");
-    rf.setDefaultConfigFile("config.ini");
-    rf.setDefault("actions","actions.ini");
-    rf.setDefault("actionsSim","actionsSim.ini");
-    rf.setDefault("actionsStereo","actionsStereo.ini");
-    rf.setDefault("actionsStereoSim","actionsStereoSim.ini");
+    rf.setDefaultContext("merge-point-clouds");
     rf.configure(argc,argv);
 
     MergePointCloudsManager mod;
