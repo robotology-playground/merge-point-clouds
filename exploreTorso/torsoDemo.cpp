@@ -21,24 +21,24 @@
 #define RIGHT_ARM_HOME_POS_Y	0.25
 #define RIGHT_ARM_HOME_POS_Z	0.14
 
-#define MAX_ARM_TRAJ_TIME  0.8
+#define MAX_ARM_TRAJ_TIME  2.0
 
 #define TORSO_HOME_POS_ROLL		0.0
 #define TORSO_HOME_POS_PITCH	0.0
 #define TORSO_HOME_POS_YAW		0.0
 
-#define TORSO_ACCELERATION_YAW		50.0
-#define TORSO_ACCELERATION_PITCH	50.0
-#define TORSO_ACCELERATION_ROLL		50.0
+#define TORSO_ACCELERATION_YAW		1e9
+#define TORSO_ACCELERATION_PITCH	1e9
+#define TORSO_ACCELERATION_ROLL		1e9
 
-#define MAX_TORSO_VELOCITY 30.0
-#define KP				10.0
+#define MAX_TORSO_VELOCITY 20.0
+#define KP				0.9
 #define MAX_TORSO_TRAJ_TIME  4.0
 
-#define GAZE_HOME_POS_X		-0.5
+#define GAZE_HOME_POS_X		-0.50
 #define GAZE_HOME_POS_Y		0.0
-#define GAZE_HOME_POS_Z		0.1
-#define DEFAULT_VERGENCE	5
+#define GAZE_HOME_POS_Z		0.12
+#define DEFAULT_VERGENCE	5.0
 
 
 #define ACK                     VOCAB3('a','c','k')
@@ -184,9 +184,10 @@ class TorsoModule:public RFModule
 				itorsoVelocity->stop();
 				return true;
 			}
-			if (norm(torsoVelocityCommand)>maxTorsoVelocity)
-				torsoVelocityCommand = maxTorsoVelocity/norm(torsoVelocityCommand)*torsoVelocityCommand;
-			
+			//if (norm(torsoVelocityCommand)>maxTorsoVelocity){
+			//	torsoVelocityCommand = maxTorsoVelocity/norm(torsoVelocityCommand)*torsoVelocityCommand;
+             //   printf("DBG0\n");
+			//}
 			itorsoVelocity->velocityMove(torsoVelocityCommand.data());
 			
 			if (!iTorsoEncoder->getEncoders(torsoActualJoints.data())){
@@ -196,7 +197,7 @@ class TorsoModule:public RFModule
 			}
 			
 			torsoVelocityCommand = kp * (target-torsoActualJoints);
-			Time::delay(0.05);
+			Time::delay(0.01);
 
 		}
 		itorsoVelocity->stop();
@@ -436,7 +437,7 @@ class TorsoModule:public RFModule
         attach(handlerPort);
 
 		objectsPort.open(("/"+moduleName+"/OPC:io").c_str());
-		if(!objectsPort.addOutput("/memory/rpc")){
+		if(!objectsPort.addOutput("/objectsPropertiesCollector/rpc")){
 			cout<<"Error connecting to OPC client!"<<endl;
 			return false;
 		}
@@ -462,11 +463,14 @@ class TorsoModule:public RFModule
 		leftArmOption.put("remote",("/"+robotName+"/cartesianController/left_arm").c_str());
 		leftArmOption.put("local",("/"+moduleName+"/left_arm").c_str());
 
+        cout<<"IO"<<endl;
 		if(!clientArmLeft.open(leftArmOption)){
+            cout<<"IO2"<<endl;
 			cout<<"Error opening left arm client!"<<endl;
 			return false;
 		}
-		
+        cout<<"IO3"<<endl;
+
 		clientArmLeft.view(icartLeft);
 		icartLeft->storeContext(&startupArmLeftContextID);
 
@@ -492,7 +496,7 @@ class TorsoModule:public RFModule
 			cout<<"Error opening right arm client!"<<endl;
 			return false;
 		}
-		
+
 		clientArmRight.view(icartRight);
 		icartRight->storeContext(&startupArmRightContextID);
 
@@ -507,8 +511,9 @@ class TorsoModule:public RFModule
 		newDof[3]=0;
 		icartRight->setDOF(newDof,curDof);
 
+cout<<"DONE2"<<endl;
 		computeArmOr();
-
+cout<<"DONE3"<<endl;
 		Property torsoOptions;
 		torsoOptions.put("device", "remote_controlboard");
 		torsoOptions.put("remote",("/"+robotName+"/torso").c_str());
@@ -532,16 +537,16 @@ class TorsoModule:public RFModule
 		clientTorso.view(iTorsoEncoder);
 
 
-		waypoints.resize(5,3);
-		waypoints(0,0) = 10.0; waypoints(0,1) = 10.0; waypoints(0,2) = 20.0; 
-		waypoints(1,0) = 30.0; waypoints(1,1) = 20.0; waypoints(1,2) = 25.0; 
-		waypoints(2,0) = 0.0; waypoints(2,1) = 0.0; waypoints(2,2) = 0.0; 
-		waypoints(3,0) = -10.0; waypoints(3,1) = -10.0; waypoints(3,2) = 20.0; 
-		waypoints(4,0) = -30.0; waypoints(4,1) = -20.0; waypoints(4,2) = 25.0; 
+		waypoints.resize(3,3);
+		waypoints(0,0) = 0.0; waypoints(0,1) = -15.0; waypoints(0,2) = 10.0; 
+		waypoints(1,0) = 0.0; waypoints(1,1) = 15.0; waypoints(1,2) = 10.0; 
+		waypoints(2,0) = 0.0; waypoints(2,1) = 0.0; waypoints(2,2) = 20.0; 
+		//waypoints(3,0) = -10.0; waypoints(3,1) = -10.0; waypoints(3,2) = 20.0; 
+		//waypoints(4,0) = -30.0; waypoints(4,1) = -20.0; waypoints(4,2) = 25.0; 
 		
 		index = 0;
 		running = false;
-		cout<<endl;
+		cout<<"DONE"<<endl;
 
 /*
 		Bottle bAdd, bReply;
