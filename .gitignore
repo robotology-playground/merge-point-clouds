@@ -20,4 +20,4 @@
 *.out
 *.app
 
-/exploreTorso/build/*
+/build/*
