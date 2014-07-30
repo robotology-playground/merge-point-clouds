@@ -86,6 +86,12 @@ protected:
             bot1.addString(object.c_str());
             out_explorer.write(bot1,bot2);
 
+            if (bot2.get(0).asVocab()==VOCAB_CMD_NACK)
+            {
+                reply.addVocab(VOCAB_CMD_NACK);
+                return true;
+            }
+
             bot1.clear(); bot2.clear();
             bot1.addVocab(VOCAB_CMD_TRACK);
             bot1.addVocab(VOCAB_CMD_GAZE);
@@ -115,10 +121,12 @@ protected:
 
                 int u=0;
                 int v=0;
+                
                 if (bot2.get(0).asVocab()==VOCAB_CMD_ACK)
                 {
-                    u=bot2.get(1).asInt();
-                    v=bot2.get(1).asInt();
+                    Bottle* point=bot2.get(1).asList();
+                    u=point->get(0).asInt();
+                    v=point->get(1).asInt();
                 }
                 else
                 {
@@ -158,7 +166,7 @@ protected:
 public:
     bool configure(ResourceFinder &rf)
     {
-        string name=rf.check("name",Value("merge-clouds-manager")).asString().c_str();
+        string name=rf.check("name",Value("manager")).asString().c_str();
         rpc.open(("/"+name+"/rpc").c_str());
         attach(rpc);
         out_explorer.open(("/"+name+"/explorer:o").c_str());
@@ -176,12 +184,7 @@ int main(int argc, char *argv[])
 
     ResourceFinder rf;
     rf.setVerbose(true);
-    rf.setDefaultContext("gesture-recognition");
-    rf.setDefaultConfigFile("config.ini");
-    rf.setDefault("actions","actions.ini");
-    rf.setDefault("actionsSim","actionsSim.ini");
-    rf.setDefault("actionsStereo","actionsStereo.ini");
-    rf.setDefault("actionsStereoSim","actionsStereoSim.ini");
+    rf.setDefaultContext("merge-point-clouds");
     rf.configure(argc,argv);
 
     MergePointCloudsManager mod;
