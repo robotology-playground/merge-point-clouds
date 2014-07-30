@@ -32,7 +32,7 @@
 #define TORSO_ACCELERATION_ROLL		1e9
 
 #define MAX_TORSO_VELOCITY 20.0
-#define KP				15
+#define KP				1.5
 #define MAX_TORSO_TRAJ_TIME  4.0
 
 #define GAZE_HOME_POS_X		-0.50
@@ -404,18 +404,41 @@ class TorsoModule:public RFModule
 				switch(command.get(1).asVocab()){
                         case ARM:
 							if (command.get(2).asString() == "on"){
+int tempCxL,tempCxR;
+							icartLeft->storeContext(&tempCxL);
+							icartLeft->storeContext(&tempCxR);
+							icartLeft->restoreContext(currentArmLeftContextID);
+							icartLeft->restoreContext(currentArmRightContextID);
+
 								icartLeft->setTrackingMode(true);
 								icartRight->setTrackingMode(true);
 								icartRight->storeContext(&currentArmRightContextID);
 								icartLeft->storeContext(&currentArmLeftContextID);
+						icartLeft->restoreContext(tempCxR);
+							icartLeft->restoreContext(tempCxL);
+							icartLeft->deleteContext(tempCxR);
+							icartLeft->deleteContext(tempCxL);
+
 								reply.addString("Arm tracking mode enabled.");
 
 							}
 							else if (command.get(2).asString() == "off"){
+int tempCxL,tempCxR;
+							icartLeft->storeContext(&tempCxL);
+							icartLeft->storeContext(&tempCxR);
+							icartLeft->restoreContext(currentArmLeftContextID);
+							icartLeft->restoreContext(currentArmRightContextID);
+
 								icartLeft->setTrackingMode(false);
 								icartRight->setTrackingMode(false);
+
 								icartRight->storeContext(&currentArmRightContextID);
 								icartLeft->storeContext(&currentArmLeftContextID);
+
+						icartLeft->restoreContext(tempCxR);
+							icartLeft->restoreContext(tempCxL);
+							icartLeft->deleteContext(tempCxR);
+							icartLeft->deleteContext(tempCxL);
 								reply.addString("Arm tracking mode disabled.");
 							}
 							else
@@ -423,13 +446,30 @@ class TorsoModule:public RFModule
 							return true;
 						case GAZE:
 							if (command.get(2).asString() == "on"){
+                                int tempCx;
+    							igaze->storeContext(&tempCx);
+    							igaze->restoreContext(currentGazeContextID);
+
 								igaze->setTrackingMode(true);
-								igaze->storeContext(&currentGazeContextID);
+
+                                igaze->storeContext(&currentGazeContextID);
+								igaze->restoreContext(tempCx);
+							    igaze->deleteContext(tempCx);
+
 								reply.addString("Gaze tracking mode enabled.");
 							}
 							else if (command.get(2).asString() == "off"){
+
+								int tempCx;
+    							igaze->storeContext(&tempCx);
+    							igaze->restoreContext(currentGazeContextID);
+
 								igaze->setTrackingMode(false);
-								igaze->storeContext(&currentGazeContextID);
+
+                                igaze->storeContext(&currentGazeContextID);
+								igaze->restoreContext(tempCx);
+							    igaze->deleteContext(tempCx);
+
 								reply.addString("Gaze tracking mode disabled.");
 							}
 							else
@@ -450,12 +490,28 @@ class TorsoModule:public RFModule
 				switch(command.get(1).asVocab()){
 						case GAZE:
 							if(command.size()==3){
+                                 int tempCx;
+    							igaze->storeContext(&tempCx);
+    							igaze->restoreContext(currentGazeContextID);
+
 								igaze->blockEyes(command.get(2).asDouble());
-								igaze->storeContext(&currentGazeContextID);
+                                
+                                igaze->storeContext(&currentGazeContextID);
+								igaze->restoreContext(tempCx);
+							    igaze->deleteContext(tempCx);
+
 								reply.addString("Gaze blocking mode enabled.");
 							}
 							else{
-								igaze->blockEyes(DEFAULT_VERGENCE);
+								int tempCx;
+    							igaze->storeContext(&tempCx);
+    							igaze->restoreContext(currentGazeContextID);
+
+								igaze->blockEyes(command.get(DEFAULT_VERGENCE).asDouble());
+                                
+                                igaze->storeContext(&currentGazeContextID);
+								igaze->restoreContext(tempCx);
+							    igaze->deleteContext(tempCx);
 								igaze->storeContext(&currentGazeContextID);
 								reply.addString("Default vergence set.");
 							}
@@ -493,7 +549,7 @@ class TorsoModule:public RFModule
 			if(running){
 				exploreTorso(waypoints.getRow(index));
 				index++;
-				if (index > 4){
+				if (index > 2){
 					running = false;
 					index = 0;
 					reply.addString("Waypoint reached. End of waypoints.");
@@ -582,8 +638,9 @@ class TorsoModule:public RFModule
 
 		icartLeft->getDOF(curDof);
         newDof=curDof;
-		newDof[0]=1.0;
-		newDof[2]=1.0;
+		newDof[0]=0.0;
+		newDof[1]=0.0;
+		newDof[2]=0.0;
 		icartLeft->setDOF(newDof,curDof);
 		icartLeft->storeContext(&currentArmLeftContextID);
 
@@ -608,8 +665,9 @@ class TorsoModule:public RFModule
 
 		icartRight->getDOF(curDof);
         newDof=curDof;
-		newDof[0]=1.0;
-		newDof[2]=1.0;
+	    newDof[0]=0.0;
+		newDof[1]=0.0;
+		newDof[2]=0.0;
 		icartRight->setDOF(newDof,curDof);
 
 		computeArmOr();
@@ -645,7 +703,7 @@ class TorsoModule:public RFModule
 		running = false;
 
 
-		/*Bottle bAdd, bReply;
+		Bottle bAdd, bReply;
 		bAdd.addVocab(Vocab::encode("add"));
 		Bottle &bTempAdd=bAdd.addList();
 
@@ -653,17 +711,18 @@ class TorsoModule:public RFModule
 		bEntity.addString("entity"); bEntity.addString("action");
 
 		Bottle &bName=bTempAdd.addList();
-		bName.addString("name"); bName.addString("asd");
+		bName.addString("name"); bName.addString("ball");
 
 		Bottle &bX= bTempAdd.addList();
-		bX.addString("position_2d"); 
+		bX.addString("position_3d"); 
 		Bottle &coord = bX.addList();	
-		coord.addDouble(10);
-		coord.addDouble(100);
+		coord.addDouble(-0.05);
+		coord.addDouble(0.0);
+		coord.addDouble(0.2);
 
 		objectsPort.write(bAdd,bReply);
 		cout<<bReply.get(0).asVocab()<<endl;
-		*/
+		
 
         return true;
     }
