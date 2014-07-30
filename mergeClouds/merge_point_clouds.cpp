@@ -223,6 +223,7 @@ public:
     bool configure(yarp::os::ResourceFinder &rf)
     {
 		path = rf.find("object-reconstruction").asString();        
+		printf("Path: %s",path.c_str());		
 		handlerPort.open("/mergeModule");
         attach(handlerPort);
         return true;
@@ -251,8 +252,11 @@ int main(int argc, char * argv[])
 
     MergeModule module;
     ResourceFinder rf;
-    rf.configure(argc, argv);
+	rf.setDefaultContext("mergeClouds");
+    rf.setDefaultConfigFile("config.ini");
     rf.setVerbose(true);
+    rf.configure(argc, argv);
+
 
     cout<<"Configure module..."<<endl;
     module.configure(rf);
