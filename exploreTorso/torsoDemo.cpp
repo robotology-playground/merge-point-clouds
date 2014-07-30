@@ -304,7 +304,7 @@ class TorsoModule:public RFModule
 				cout<<"first"<<endl;
 				if(bReply.size()==0 || bReply.get(0).asVocab()!=Vocab::encode("ack") || bReply.get(1).asList()->check("id")==false || 
 					bReply.get(1).asList()->find("id").asList()->size()==0){
-						reply.addString("Oject not found in db.");
+						reply.addVocab(Vocab::encode("nack"));
 						return true;
 				}
 				bGet.addVocab(Vocab::encode("get"));
@@ -315,7 +315,7 @@ class TorsoModule:public RFModule
 				cout<<"second"<<endl;
 				if(bReply.size()==0 || bReply.get(0).asVocab()!=Vocab::encode("ack") || bReply.get(1).asList()->check("position_3d")==false ||
 					bReply.get(1).asList()->find("position_3d").asList()->size()==0){
-						reply.addString("Missing object's parameters.");
+						reply.addVocab(Vocab::encode("nack"));
 						return true;
 				}
 				cout<<"third"<<endl;
@@ -373,7 +373,7 @@ class TorsoModule:public RFModule
 				objectsPort.write(bAsk,bReply);
 				if(bReply.size()==0 || bReply.get(0).asVocab()!=Vocab::encode("ack") || bReply.get(1).asList()->check("id")==false || 
 					bReply.get(1).asList()->find("id").asList()->size()==0){
-						reply.addString("Oject not found in db.");
+						reply.addVocab(Vocab::encode("nack"));
 						return true;
 				}
 				bGet.addVocab(Vocab::encode("get"));
@@ -383,14 +383,13 @@ class TorsoModule:public RFModule
 				objectsPort.write(bGet,bReply);
 				if(bReply.size()==0 || bReply.get(0).asVocab()!=Vocab::encode("ack") || bReply.get(1).asList()->check("position_2d")==false ||
 					bReply.get(1).asList()->find("position_2d").asList()->size()==0){
-						reply.addString("Missing object's parameters.");
+						reply.addVocab(Vocab::encode("nack"));
 						return true;
 				}
                 Vector objPosition(2);
 				objPosition[0] = bReply.get(1).asList()->find("position_2d").asList()->get(0).asInt();
                 objPosition[1] = bReply.get(1).asList()->find("position_2d").asList()->get(1).asInt();
-				Bottle &ack  = reply.addList();
-				ack.addVocab(VOCAB3('A','C','K'));
+				reply.addVocab(VOCAB3('a','c','k'));
 				Bottle &coord  = reply.addList();
 				coord.addInt(objPosition[0]);
 				coord.addInt(objPosition[1]);

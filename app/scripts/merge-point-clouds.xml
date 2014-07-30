@@ -78,19 +78,19 @@
 	<connection>
 		<from>/manager/explorer:o</from>
 		<to>/torsoModule/rpc:i</to>
-		<protocol>udp</protocol>
+		<protocol>tcp</protocol>
 	</connection>
 	
 	<connection>
 		<from>/manager/merger:o</from>
 		<to>/mergeModule</to>
-		<protocol>udp</protocol>
+		<protocol>tcp</protocol>
 	</connection>
 	
 	<connection>
 		<from>/manager/object-reconstruction:o</from>
 		<to>/object-reconstruction/rpc</to>
-		<protocol>udp</protocol>
+		<protocol>tcp</protocol>
 	</connection>
 
  </application>
