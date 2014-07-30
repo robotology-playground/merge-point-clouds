@@ -32,7 +32,7 @@
 #define TORSO_ACCELERATION_ROLL		1e9
 
 #define MAX_TORSO_VELOCITY 20.0
-#define KP				2.0
+#define KP				0.9
 #define KD				0.2
 #define KI				0.2
 #define DT				0.05
@@ -409,18 +409,20 @@ class TorsoModule:public RFModule
 				bTempGet.addString("id");
 				bTempGet.addInt(bReply.get(1).asList()->find("id").asList()->get(0).asInt());
 				objectsPort.write(bGet,bReply);
-				if(bReply.size()==0 || bReply.get(0).asVocab()!=Vocab::encode("ack") || bReply.get(1).asList()->check("position_2d")==false ||
-					bReply.get(1).asList()->find("position_2d").asList()->size()==0){
+				if(bReply.size()==0 || bReply.get(0).asVocab()!=Vocab::encode("ack") || bReply.get(1).asList()->check("position_2d_left")==false ||
+					bReply.get(1).asList()->find("position_2d_left").asList()->size()==0){
 						reply.addVocab(Vocab::encode("nack"));
 						return true;
 				}
-                Vector objPosition(2);
-				objPosition[0] = bReply.get(1).asList()->find("position_2d").asList()->get(0).asInt();
-                objPosition[1] = bReply.get(1).asList()->find("position_2d").asList()->get(1).asInt();
+                Vector objPosition(4);
+				objPosition[0] = bReply.get(1).asList()->find("position_2d_left").asList()->get(0).asInt();
+                objPosition[1] = bReply.get(1).asList()->find("position_2d_left").asList()->get(1).asInt();
+                objPosition[2] = bReply.get(1).asList()->find("position_2d_left").asList()->get(2).asInt();
+                objPosition[3] = bReply.get(1).asList()->find("position_2d_left").asList()->get(3).asInt();
 				reply.addVocab(VOCAB3('a','c','k'));
 				Bottle &coord  = reply.addList();
-				coord.addInt(objPosition[0]);
-				coord.addInt(objPosition[1]);
+				coord.addInt((int)(objPosition[0]+objPosition[2])/2);
+				coord.addInt((int)(objPosition[1]+objPosition[3])/2);
 				return true;
 			}
 			else{
@@ -433,29 +435,29 @@ class TorsoModule:public RFModule
                         case ARM:
 							if (command.get(2).asString() == "on"){
 int tempCxL,tempCxR;
-							icartLeft->storeContext(&tempCxL);
-							icartLeft->storeContext(&tempCxR);
-							icartLeft->restoreContext(currentArmLeftContextID);
-							icartLeft->restoreContext(currentArmRightContextID);
+							//icartLeft->storeContext(&tempCxL);
+							//icartLeft->storeContext(&tempCxR);
+							//icartLeft->restoreContext(currentArmLeftContextID);
+							//icartLeft->restoreContext(currentArmRightContextID);
 
 								icartLeft->setTrackingMode(true);
 								icartRight->setTrackingMode(true);
 								icartRight->storeContext(&currentArmRightContextID);
 								icartLeft->storeContext(&currentArmLeftContextID);
-						icartLeft->restoreContext(tempCxR);
-							icartLeft->restoreContext(tempCxL);
-							icartLeft->deleteContext(tempCxR);
-							icartLeft->deleteContext(tempCxL);
+						//icartLeft->restoreContext(tempCxR);
+						//	icartLeft->restoreContext(tempCxL);
+						//	icartLeft->deleteContext(tempCxR);
+						//	icartLeft->deleteContext(tempCxL);
 
 								reply.addString("Arm tracking mode enabled.");
 
 							}
 							else if (command.get(2).asString() == "off"){
 int tempCxL,tempCxR;
-							icartLeft->storeContext(&tempCxL);
-							icartLeft->storeContext(&tempCxR);
-							icartLeft->restoreContext(currentArmLeftContextID);
-							icartLeft->restoreContext(currentArmRightContextID);
+							//icartLeft->storeContext(&tempCxL);
+							//icartLeft->storeContext(&tempCxR);
+							//icartLeft->restoreContext(currentArmLeftContextID);
+							//icartLeft->restoreContext(currentArmRightContextID);
 
 								icartLeft->setTrackingMode(false);
 								icartRight->setTrackingMode(false);
@@ -463,10 +465,10 @@ int tempCxL,tempCxR;
 								icartRight->storeContext(&currentArmRightContextID);
 								icartLeft->storeContext(&currentArmLeftContextID);
 
-						icartLeft->restoreContext(tempCxR);
-							icartLeft->restoreContext(tempCxL);
-							icartLeft->deleteContext(tempCxR);
-							icartLeft->deleteContext(tempCxL);
+						//icartLeft->restoreContext(tempCxR);
+						//	icartLeft->restoreContext(tempCxL);
+						//	icartLeft->deleteContext(tempCxR);
+						//	icartLeft->deleteContext(tempCxL);
 								reply.addString("Arm tracking mode disabled.");
 							}
 							else
@@ -475,28 +477,28 @@ int tempCxL,tempCxR;
 						case GAZE:
 							if (command.get(2).asString() == "on"){
                                 int tempCx;
-    							igaze->storeContext(&tempCx);
-    							igaze->restoreContext(currentGazeContextID);
+    							//igaze->storeContext(&tempCx);
+    							//igaze->restoreContext(currentGazeContextID);
 
 								igaze->setTrackingMode(true);
 
                                 igaze->storeContext(&currentGazeContextID);
-								igaze->restoreContext(tempCx);
-							    igaze->deleteContext(tempCx);
+								//igaze->restoreContext(tempCx);
+							    //igaze->deleteContext(tempCx);
 
 								reply.addString("Gaze tracking mode enabled.");
 							}
 							else if (command.get(2).asString() == "off"){
 
 								int tempCx;
-    							igaze->storeContext(&tempCx);
-    							igaze->restoreContext(currentGazeContextID);
+    							//igaze->storeContext(&tempCx);
+    							//igaze->restoreContext(currentGazeContextID);
 
 								igaze->setTrackingMode(false);
 
                                 igaze->storeContext(&currentGazeContextID);
-								igaze->restoreContext(tempCx);
-							    igaze->deleteContext(tempCx);
+								//igaze->restoreContext(tempCx);
+							    //igaze->deleteContext(tempCx);
 
 								reply.addString("Gaze tracking mode disabled.");
 							}
@@ -518,29 +520,29 @@ int tempCxL,tempCxR;
 				switch(command.get(1).asVocab()){
 						case GAZE:
 							if(command.size()==3){
-                                 int tempCx;
-    							igaze->storeContext(&tempCx);
-    							igaze->restoreContext(currentGazeContextID);
+                                // int tempCx;
+    							//igaze->storeContext(&tempCx);
+    							//igaze->restoreContext(currentGazeContextID);
 
 								igaze->blockEyes(command.get(2).asDouble());
                                 
                                 igaze->storeContext(&currentGazeContextID);
-								igaze->restoreContext(tempCx);
-							    igaze->deleteContext(tempCx);
+								//igaze->restoreContext(tempCx);
+							    //igaze->deleteContext(tempCx);
 
 								reply.addString("Gaze blocking mode enabled.");
 							}
 							else{
-								int tempCx;
-    							igaze->storeContext(&tempCx);
-    							igaze->restoreContext(currentGazeContextID);
+								//int tempCx;
+    							//igaze->storeContext(&tempCx);
+    							//igaze->restoreContext(currentGazeContextID);
 
-								igaze->blockEyes(command.get(DEFAULT_VERGENCE).asDouble());
+								igaze->blockEyes(DEFAULT_VERGENCE);
                                 
                                 igaze->storeContext(&currentGazeContextID);
-								igaze->restoreContext(tempCx);
-							    igaze->deleteContext(tempCx);
-								igaze->storeContext(&currentGazeContextID);
+								//igaze->restoreContext(tempCx);
+							    //igaze->deleteContext(tempCx);
+								
 								reply.addString("Default vergence set.");
 							}
 							return true;
@@ -612,7 +614,7 @@ int tempCxL,tempCxR;
 
 		moduleName=rf.check("name",Value("torsoModule")).asString().c_str();
 		robotName=rf.check("robot",Value("icub")).asString().c_str();
-		OPCName=rf.check("OPC",Value("objectsPropertiesCollector")).asString().c_str();
+		OPCName=rf.check("OPC",Value("memory")).asString().c_str();
 
 		period=rf.check("period",Value(0.2)).asDouble();
 		kp=rf.check("kp",Value(KP)).asDouble();
@@ -722,7 +724,7 @@ int tempCxL,tempCxR;
 		running = false;
 
 
-		Bottle bAdd, bReply;
+		/*Bottle bAdd, bReply;
 		bAdd.addVocab(Vocab::encode("add"));
 		Bottle &bTempAdd=bAdd.addList();
 
@@ -741,7 +743,7 @@ int tempCxL,tempCxR;
 
 		objectsPort.write(bAdd,bReply);
 		cout<<bReply.get(0).asVocab()<<endl;
-		
+		*/
 
         return true;
     }
