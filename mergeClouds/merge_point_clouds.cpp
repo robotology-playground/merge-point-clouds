@@ -252,7 +252,7 @@ int main(int argc, char * argv[])
 
     MergeModule module;
     ResourceFinder rf;
-	rf.setDefaultContext("mergeClouds");
+	rf.setDefaultContext("merge-point-clouds");
     rf.setDefaultConfigFile("config.ini");
     rf.setVerbose(true);
     rf.configure(argc, argv);
