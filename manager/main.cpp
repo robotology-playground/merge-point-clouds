@@ -65,88 +65,103 @@ protected:
         {
             string object=cmd.get(1).asString();
             Bottle bot1,bot2;
-            bot1.clear(); bot2.clear();
-            bot1.addString("set");
-            bot1.addString("write");
-            bot1.addString("on");
-            out_obj_reconstr.write(bot1, bot2);
-
-            bot1.clear(); bot2.clear();
-            bot1.addVocab(VOCAB_CMD_HOME);
-            bot1.addVocab(VOCAB_CMD_ARM);
-            out_explorer.write(bot1,bot2);
-
-            bot1.clear(); bot2.clear();
-            bot1.addVocab(VOCAB_CMD_BLOCK);
-            bot1.addVocab(VOCAB_CMD_GAZE);
-            out_explorer.write(bot1,bot2);
-
-            bot1.clear(); bot2.clear();
-            bot1.addVocab(VOCAB_CMD_LOOK);
-            bot1.addString(object.c_str());
-            out_explorer.write(bot1,bot2);
-
-            if (bot2.get(0).asVocab()==VOCAB_CMD_NACK)
-            {
-                reply.addVocab(VOCAB_CMD_NACK);
-                return true;
-            }
-
-            bot1.clear(); bot2.clear();
-            bot1.addVocab(VOCAB_CMD_TRACK);
-            bot1.addVocab(VOCAB_CMD_GAZE);
-            bot1.addString("on");
-            out_explorer.write(bot1,bot2);
-
-            bot1.clear(); bot2.clear();
-            bot1.addVocab(VOCAB_CMD_TRACK);
-            bot1.addVocab(VOCAB_CMD_ARM);
-            bot1.addString("on");
-            out_explorer.write(bot1,bot2);
-
-            bot1.clear(); bot2.clear();
-            bot1.addVocab(VOCAB_CMD_RUN);
-            out_explorer.write(bot1,bot2);
-
-            for (int i=0; i<n_mov; i++)
+            if (out_obj_reconstr.getOutputCount()>0)
             {
                 bot1.clear(); bot2.clear();
-                bot1.addVocab(VOCAB_CMD_NEXT);
+                bot1.addString("set");
+                bot1.addString("write");
+                bot1.addString("on");
+                out_obj_reconstr.write(bot1, bot2);
+            }
+
+            if (out_explorer.getOutputCount()>0)
+            {
+                bot1.clear(); bot2.clear();
+                bot1.addVocab(VOCAB_CMD_HOME);
+                bot1.addVocab(VOCAB_CMD_ARM);
                 out_explorer.write(bot1,bot2);
 
                 bot1.clear(); bot2.clear();
-                bot1.addVocab(VOCAB_CMD_GET);
+                bot1.addVocab(VOCAB_CMD_BLOCK);
+                bot1.addVocab(VOCAB_CMD_GAZE);
+                out_explorer.write(bot1,bot2);
+
+                bot1.clear(); bot2.clear();
+                bot1.addVocab(VOCAB_CMD_LOOK);
                 bot1.addString(object.c_str());
                 out_explorer.write(bot1,bot2);
 
-                int u=0;
-                int v=0;
-                
-                if (bot2.get(0).asVocab()==VOCAB_CMD_ACK)
-                {
-                    Bottle* point=bot2.get(1).asList();
-                    u=point->get(0).asInt();
-                    v=point->get(1).asInt();
-                }
-                else
+                if (bot2.get(0).asVocab()==VOCAB_CMD_NACK)
                 {
                     reply.addVocab(VOCAB_CMD_NACK);
                     return true;
                 }
 
                 bot1.clear(); bot2.clear();
-                bot1.addInt(u);
-                bot1.addInt(v);
-                out_obj_reconstr.write(bot1, bot2);
+                bot1.addVocab(VOCAB_CMD_TRACK);
+                bot1.addVocab(VOCAB_CMD_GAZE);
+                bot1.addString("on");
+                out_explorer.write(bot1,bot2);
 
                 bot1.clear(); bot2.clear();
-                bot1.addString("3Drec");
-                out_obj_reconstr.write(bot1, bot2);
+                bot1.addVocab(VOCAB_CMD_TRACK);
+                bot1.addVocab(VOCAB_CMD_ARM);
+                bot1.addString("on");
+                out_explorer.write(bot1,bot2);
+
+                bot1.clear(); bot2.clear();
+                bot1.addVocab(VOCAB_CMD_RUN);
+                out_explorer.write(bot1,bot2);
             }
 
-            bot1.clear(); bot2.clear();
-            bot1.addVocab(VOCAB_CMD_MERGE);
-            out_merger.write(bot1,bot2);
+            for (int i=0; i<n_mov; i++)
+            {
+                if (out_explorer.getOutputCount()>0)
+                {
+                    bot1.clear(); bot2.clear();
+                    bot1.addVocab(VOCAB_CMD_NEXT);
+                    out_explorer.write(bot1,bot2);
+
+                    bot1.clear(); bot2.clear();
+                    bot1.addVocab(VOCAB_CMD_GET);
+                    bot1.addString(object.c_str());
+                    out_explorer.write(bot1,bot2);
+
+                    int u=0;
+                    int v=0;
+                
+                    if (bot2.get(0).asVocab()==VOCAB_CMD_ACK)
+                    {
+                        Bottle* point=bot2.get(1).asList();
+                        u=point->get(0).asInt();
+                        v=point->get(1).asInt();
+                    }
+                    else
+                    {
+                        reply.addVocab(VOCAB_CMD_NACK);
+                        return true;
+                    }
+
+                    if (out_obj_reconstr.getOutputCount()>0)
+                    {
+                        bot1.clear(); bot2.clear();
+                        bot1.addInt(u);
+                        bot1.addInt(v);
+                        out_obj_reconstr.write(bot1, bot2);
+
+                        bot1.clear(); bot2.clear();
+                        bot1.addString("3Drec");
+                        out_obj_reconstr.write(bot1, bot2);
+                    }
+                }
+            }
+
+            if (out_merger.getOutputCount())
+            {
+                bot1.clear(); bot2.clear();
+                bot1.addVocab(VOCAB_CMD_MERGE);
+                out_merger.write(bot1,bot2);
+            }
 
             reply.addVocab(VOCAB_CMD_ACK);
             return true;
