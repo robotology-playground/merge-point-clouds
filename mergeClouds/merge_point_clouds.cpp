@@ -13,9 +13,7 @@
 #include <pcl/filters/voxel_grid.h>
 #include <pcl/features/normal_3d.h>
 
-#ifdef _WIN32
-    #include "dirent.h"
-#endif
+#include <dirent.h>
 
 typedef pcl::PointXYZRGB PointT;
 typedef pcl::PointCloud<PointT> PointCloudT;
@@ -225,6 +223,7 @@ public:
     bool configure(yarp::os::ResourceFinder &rf)
     {
 		path = rf.find("object-reconstruction").asString();        
+		printf("Path: %s",path.c_str());		
 		handlerPort.open("/mergeModule");
         attach(handlerPort);
         return true;
@@ -253,10 +252,11 @@ int main(int argc, char * argv[])
 
     MergeModule module;
     ResourceFinder rf;
-    rf.setDefaultContext("merge-point-clouds");
+	rf.setDefaultContext("mergeClouds");
     rf.setDefaultConfigFile("config.ini");
-    rf.configure(argc, argv);
     rf.setVerbose(true);
+    rf.configure(argc, argv);
+
 
     cout<<"Configure module..."<<endl;
     module.configure(rf);
