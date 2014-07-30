@@ -21,7 +21,7 @@
 #define RIGHT_ARM_HOME_POS_Y	0.25
 #define RIGHT_ARM_HOME_POS_Z	0.14
 
-#define MAX_ARM_TRAJ_TIME  2.0
+#define MAX_ARM_TRAJ_TIME  1.0
 
 #define TORSO_HOME_POS_ROLL		0.0
 #define TORSO_HOME_POS_PITCH	0.0
@@ -32,7 +32,10 @@
 #define TORSO_ACCELERATION_ROLL		1e9
 
 #define MAX_TORSO_VELOCITY 20.0
-#define KP				15
+#define KP				2.0
+#define KD				0.2
+#define KI				0.2
+#define DT				0.05
 #define MAX_TORSO_TRAJ_TIME  4.0
 
 #define GAZE_HOME_POS_X		-0.50
@@ -152,7 +155,7 @@ class TorsoModule:public RFModule
 		Vector torsoActualJoints;
 		Vector torsoVelocityCommand;
 		Vector torsoAccCommand;
-		Vector error;
+		Vector error,integral,derivative,preError;
 		int jointsNumber=0;
 		int i;
 		double time= 0.0;
@@ -163,7 +166,26 @@ class TorsoModule:public RFModule
 		torsoVelocityCommand.resize(jointsNumber);
 		torsoInitialJoints.resize(jointsNumber);
 		torsoActualJoints.resize(jointsNumber);
+		
 		error.resize(jointsNumber);
+		integral.resize(jointsNumber);
+		derivative.resize(jointsNumber);
+		preError.resize(jointsNumber);
+		
+		
+		preError[0] = 0.0;
+		preError[1] = 0.0;
+		preError[2] = 0.0;
+
+		integral[0] = 0.0;
+		integral[1] = 0.0;
+		integral[2] = 0.0;
+
+		derivative[0] = 0.0;
+		derivative[1] = 0.0;
+		derivative[2] = 0.0;
+
+		
 
 		for(i =0; i< jointsNumber;i++);
 			torsoAccCommand[i] = torsoAcceleration[i];
@@ -179,21 +201,22 @@ class TorsoModule:public RFModule
 		VectorOf<int> modes(3);
 		modes[0]=modes[1]=modes[2]=VOCAB_CM_VELOCITY;
 		itorsoMode->setControlModes(modes.getFirst());
+		
 
-		torsoVelocityCommand = kp * (target-torsoInitialJoints);
+		error = target-torsoInitialJoints;
+		integral = integral + (error * DT);
+		derivative = (error - preError) / DT; 
+		preError = error; 
+		
+		torsoVelocityCommand = kp * error + KI * integral + KD * derivative;
 		time = Time::now();
 
-
-		while (norm(torsoVelocityCommand)>0.1){
+		while (norm(error)>0.2){
 			if(Time::now()-time>maxTorsoTrajTime){
 				cout<<"Max time reached."<<endl;
 				itorsoVelocity->stop();
 				return true;
 			}
-			//if (norm(torsoVelocityCommand)>maxTorsoVelocity){
-			//	torsoVelocityCommand = maxTorsoVelocity/norm(torsoVelocityCommand)*torsoVelocityCommand;
-             //   printf("DBG0\n");
-			//}
 			itorsoVelocity->velocityMove(torsoVelocityCommand.data());
 			
 			if (!iTorsoEncoder->getEncoders(torsoActualJoints.data())){
@@ -202,8 +225,13 @@ class TorsoModule:public RFModule
 				return false;
 			}
 			
-			torsoVelocityCommand = kp * (target-torsoActualJoints);
-			Time::delay(0.01);
+			error = target-torsoActualJoints;
+			integral = integral + (error * DT);
+			derivative = (error - preError) / DT; 
+			preError = error;
+			torsoVelocityCommand = kp * error + KI * integral + KD * derivative;
+		
+			Time::delay(DT);
 
 		}
 		itorsoVelocity->stop();
@@ -231,8 +259,8 @@ class TorsoModule:public RFModule
 							icartLeft->restoreContext(currentArmLeftContextID);
 							icartLeft->restoreContext(currentArmRightContextID);
 
-							icartLeft->goToPoseSync(leftArmHomePosition,leftArmHomeOrientation);
-							icartRight->goToPoseSync(rightArmHomePosition,rightArmHomeOrientation);
+							icartLeft->goToPositionSync(leftArmHomePosition);
+							icartRight->goToPositionSync(rightArmHomePosition);
 							
 							icartRight->waitMotionDone(0.1,2);
 							icartLeft->waitMotionDone(0.1,2);
@@ -274,8 +302,8 @@ class TorsoModule:public RFModule
 				igaze->restoreContext(currentGazeContextID);
 
 
-				icartLeft->goToPoseSync(leftArmHomePosition,leftArmHomeOrientation);
-				icartRight->goToPoseSync(rightArmHomePosition,rightArmHomeOrientation);
+				icartLeft->goToPositionSync(leftArmHomePosition);
+				icartRight->goToPositionSync(rightArmHomePosition);
 				igaze->lookAtFixationPoint(gazeHomePosition);
 				exploreTorso(torsoHomePosition);
 				igaze->waitMotionDone(0.1,2);
@@ -404,18 +432,41 @@ class TorsoModule:public RFModule
 				switch(command.get(1).asVocab()){
                         case ARM:
 							if (command.get(2).asString() == "on"){
+int tempCxL,tempCxR;
+							icartLeft->storeContext(&tempCxL);
+							icartLeft->storeContext(&tempCxR);
+							icartLeft->restoreContext(currentArmLeftContextID);
+							icartLeft->restoreContext(currentArmRightContextID);
+
 								icartLeft->setTrackingMode(true);
 								icartRight->setTrackingMode(true);
 								icartRight->storeContext(&currentArmRightContextID);
 								icartLeft->storeContext(&currentArmLeftContextID);
+						icartLeft->restoreContext(tempCxR);
+							icartLeft->restoreContext(tempCxL);
+							icartLeft->deleteContext(tempCxR);
+							icartLeft->deleteContext(tempCxL);
+
 								reply.addString("Arm tracking mode enabled.");
 
 							}
 							else if (command.get(2).asString() == "off"){
+int tempCxL,tempCxR;
+							icartLeft->storeContext(&tempCxL);
+							icartLeft->storeContext(&tempCxR);
+							icartLeft->restoreContext(currentArmLeftContextID);
+							icartLeft->restoreContext(currentArmRightContextID);
+
 								icartLeft->setTrackingMode(false);
 								icartRight->setTrackingMode(false);
+
 								icartRight->storeContext(&currentArmRightContextID);
 								icartLeft->storeContext(&currentArmLeftContextID);
+
+						icartLeft->restoreContext(tempCxR);
+							icartLeft->restoreContext(tempCxL);
+							icartLeft->deleteContext(tempCxR);
+							icartLeft->deleteContext(tempCxL);
 								reply.addString("Arm tracking mode disabled.");
 							}
 							else
@@ -423,13 +474,30 @@ class TorsoModule:public RFModule
 							return true;
 						case GAZE:
 							if (command.get(2).asString() == "on"){
+                                int tempCx;
+    							igaze->storeContext(&tempCx);
+    							igaze->restoreContext(currentGazeContextID);
+
 								igaze->setTrackingMode(true);
-								igaze->storeContext(&currentGazeContextID);
+
+                                igaze->storeContext(&currentGazeContextID);
+								igaze->restoreContext(tempCx);
+							    igaze->deleteContext(tempCx);
+
 								reply.addString("Gaze tracking mode enabled.");
 							}
 							else if (command.get(2).asString() == "off"){
+
+								int tempCx;
+    							igaze->storeContext(&tempCx);
+    							igaze->restoreContext(currentGazeContextID);
+
 								igaze->setTrackingMode(false);
-								igaze->storeContext(&currentGazeContextID);
+
+                                igaze->storeContext(&currentGazeContextID);
+								igaze->restoreContext(tempCx);
+							    igaze->deleteContext(tempCx);
+
 								reply.addString("Gaze tracking mode disabled.");
 							}
 							else
@@ -450,12 +518,28 @@ class TorsoModule:public RFModule
 				switch(command.get(1).asVocab()){
 						case GAZE:
 							if(command.size()==3){
+                                 int tempCx;
+    							igaze->storeContext(&tempCx);
+    							igaze->restoreContext(currentGazeContextID);
+
 								igaze->blockEyes(command.get(2).asDouble());
-								igaze->storeContext(&currentGazeContextID);
+                                
+                                igaze->storeContext(&currentGazeContextID);
+								igaze->restoreContext(tempCx);
+							    igaze->deleteContext(tempCx);
+
 								reply.addString("Gaze blocking mode enabled.");
 							}
 							else{
-								igaze->blockEyes(DEFAULT_VERGENCE);
+								int tempCx;
+    							igaze->storeContext(&tempCx);
+    							igaze->restoreContext(currentGazeContextID);
+
+								igaze->blockEyes(command.get(DEFAULT_VERGENCE).asDouble());
+                                
+                                igaze->storeContext(&currentGazeContextID);
+								igaze->restoreContext(tempCx);
+							    igaze->deleteContext(tempCx);
 								igaze->storeContext(&currentGazeContextID);
 								reply.addString("Default vergence set.");
 							}
@@ -493,7 +577,7 @@ class TorsoModule:public RFModule
 			if(running){
 				exploreTorso(waypoints.getRow(index));
 				index++;
-				if (index > 4){
+				if (index > 2){
 					running = false;
 					index = 0;
 					reply.addString("Waypoint reached. End of waypoints.");
@@ -555,6 +639,7 @@ class TorsoModule:public RFModule
 			return false;
 		}
 		clientGazeCtrl.view(igaze);
+		igaze->restoreContext(0);
 		igaze->storeContext(&startupGazeContextID);
 		gazeHomePosition.push_back(GAZE_HOME_POS_X);
 		gazeHomePosition.push_back(GAZE_HOME_POS_Y);
@@ -571,6 +656,7 @@ class TorsoModule:public RFModule
 		}
 
 		clientArmLeft.view(icartLeft);
+		icartLeft->restoreContext(0);
 		icartLeft->storeContext(&startupArmLeftContextID);
 
 		leftArmHomePosition.push_back(LEFT_ARM_HOME_POS_X);
@@ -578,13 +664,7 @@ class TorsoModule:public RFModule
 		leftArmHomePosition.push_back(LEFT_ARM_HOME_POS_Z);
 		
 		icartLeft->setTrajTime(maxArmTrajTime);
-
-
-		icartLeft->getDOF(curDof);
-        newDof=curDof;
-		newDof[0]=1.0;
-		newDof[2]=1.0;
-		icartLeft->setDOF(newDof,curDof);
+		
 		icartLeft->storeContext(&currentArmLeftContextID);
 
 		Property rightArmOption;
@@ -598,6 +678,7 @@ class TorsoModule:public RFModule
 		}
 
 		clientArmRight.view(icartRight);
+		icartRight->restoreContext(0);
 		icartRight->storeContext(&startupArmRightContextID);
 
 		rightArmHomePosition.push_back(RIGHT_ARM_HOME_POS_X);
@@ -606,11 +687,7 @@ class TorsoModule:public RFModule
 				
 		icartRight->setTrajTime(maxArmTrajTime);
 
-		icartRight->getDOF(curDof);
-        newDof=curDof;
-		newDof[0]=1.0;
-		newDof[2]=1.0;
-		icartRight->setDOF(newDof,curDof);
+		icartRight->storeContext(&currentArmRightContextID);
 
 		computeArmOr();
 		Property torsoOptions;
@@ -645,7 +722,7 @@ class TorsoModule:public RFModule
 		running = false;
 
 
-		/*Bottle bAdd, bReply;
+		Bottle bAdd, bReply;
 		bAdd.addVocab(Vocab::encode("add"));
 		Bottle &bTempAdd=bAdd.addList();
 
@@ -653,17 +730,18 @@ class TorsoModule:public RFModule
 		bEntity.addString("entity"); bEntity.addString("action");
 
 		Bottle &bName=bTempAdd.addList();
-		bName.addString("name"); bName.addString("asd");
+		bName.addString("name"); bName.addString("ball");
 
 		Bottle &bX= bTempAdd.addList();
-		bX.addString("position_2d"); 
+		bX.addString("position_3d"); 
 		Bottle &coord = bX.addList();	
-		coord.addDouble(10);
-		coord.addDouble(100);
+		coord.addDouble(-0.05);
+		coord.addDouble(0.0);
+		coord.addDouble(0.2);
 
 		objectsPort.write(bAdd,bReply);
 		cout<<bReply.get(0).asVocab()<<endl;
-		*/
+		
 
         return true;
     }
