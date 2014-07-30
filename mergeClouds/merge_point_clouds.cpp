@@ -13,7 +13,9 @@
 #include <pcl/filters/voxel_grid.h>
 #include <pcl/features/normal_3d.h>
 
-#include <dirent.h>
+#ifdef _WIN32
+    #include "dirent.h"
+#endif
 
 typedef pcl::PointXYZRGB PointT;
 typedef pcl::PointCloud<PointT> PointCloudT;
