@@ -17,8 +17,14 @@ add_definitions(${YARP_DEFINES})
 
 add_subdirectory(app)
 
+find_package(PCL 1.7)
+
+if (PCL_FOUND)
+add_subdirectory(mergeClouds)
+endif()
+
 add_subdirectory(exploreTorso)
 add_subdirectory(manager)
-add_subdirectory(mergeClouds)
+
 icubcontrib_add_uninstall_target()
 
